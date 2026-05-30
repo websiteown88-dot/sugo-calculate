@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>主播鑽石等值金幣比較工具</title>
+<style>
+  :root{--blue:#1da9ff;--dark:#101828;--muted:#667085;--line:#e5e7eb;--green:#079455;--red:#d92d20;--amber:#b54708}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;background:linear-gradient(180deg,#2da8ff 0%,#eef7ff 38%,#f8fbff 100%);color:var(--dark);min-height:100vh;padding:18px}
+  .wrap{max-width:980px;margin:0 auto}
+  .hero{color:#fff;margin:8px 0 18px}.hero h1{font-size:28px;margin:0 0 8px;font-weight:900}.hero p{margin:0;opacity:.94;line-height:1.55}
+  .card{background:rgba(255,255,255,.97);border-radius:28px;padding:22px;box-shadow:0 18px 45px rgba(16,24,40,.14);margin-bottom:16px}
+  .rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .rate{background:#e9f7ff;border:1px solid #cceeff;border-radius:16px;padding:12px 14px;color:#0369a1;font-weight:800;font-size:14px}
+  label{display:block;font-weight:900;margin:14px 0 8px}
+  input{width:100%;border:1px solid #d0d5dd;border-radius:16px;padding:14px 15px;font-size:19px;font-weight:800;outline:none;background:#fff}
+  input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(29,169,255,.16)}
+  button.action{width:100%;border:none;border-radius:16px;padding:14px 15px;font-size:16px;font-weight:900;background:#008ee6;color:white;cursor:pointer;margin-top:8px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .result{margin-top:18px;border-radius:22px;background:#f9fafb;border:1px solid var(--line);padding:17px}
+  .big{font-size:29px;line-height:1.2;font-weight:950;color:#008ee6;word-break:break-all}.small{color:var(--muted);font-size:14px;margin-top:6px;line-height:1.55}
+  .win{background:#ecfdf3;border-color:#abefc6}.win .big{color:var(--green)}
+  .lose{background:#fff1f3;border-color:#fecdd6}.lose .big{color:var(--red)}
+  .mid{background:#fffaeb;border-color:#fedf89}
+  .profit{color:var(--green);font-weight:950}
+  .decision{border-radius:24px;padding:18px;margin-top:18px;font-weight:900;font-size:22px;line-height:1.45;background:#ecfdf3;color:var(--green);border:1px solid #abefc6}
+  .warn{background:#fffaeb;border:1px solid #fedf89;color:#93370d;border-radius:22px;padding:17px;font-weight:900;line-height:1.55;margin-top:16px}
+  .table{width:100%;border-collapse:separate;border-spacing:0 10px;margin-top:10px}
+  .table th{text-align:left;color:#667085;font-size:13px}
+  .table td{background:#f9fafb;padding:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:800}
+  .table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px}
+  .table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+  .preset{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}.preset:last-child{border-bottom:none}
+  .coins{font-size:21px;font-weight:950}.diamondBtn{justify-self:end;border:none;border-radius:999px;padding:10px 15px;background:#dff5ff;color:#10a8f5;font-size:19px;font-weight:950;cursor:pointer}
+  a{color:#008ee6;font-weight:800;text-decoration:none}
+  @media(max-width:760px){.rates,.grid,.grid3{grid-template-columns:1fr}.card{padding:17px;border-radius:24px}.hero h1{font-size:24px}.big{font-size:26px}.table{font-size:13px}.table td{padding:11px 8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>主播鑽石等值金幣比較工具</h1>
+    <p>輸入同一批鑽石，系統會先換算成可提領台幣，再比較：直接用鑽石換金幣、拿等值台幣去官方儲值、拿等值台幣去幣商儲值，各自可以得到多少金幣。</p>
+  </div>
+
+  <div class="card">
+    <div class="rates">
+      <div class="rate">鑽石直接換：5000 鑽石 = 1600 金幣</div>
+      <div class="rate">鑽石提領：5000 鑽石 = 1 美元</div>
+      <div class="rate">官方儲值：1 台幣 = 37 金幣</div>
+      <div class="rate">幣商儲值：10000 以下 48 倍，10000 以上 50 倍</div>
+      <div class="rate">提領台幣約扣 8% 手續費</div>
+      <div class="rate">官方與幣商儲值可累積等級；鑽石換金幣不累積等級</div>
+    </div>
+
+    <div class="warn">
+      閱讀方式：這不是問「我要儲多少台幣」，而是問「這批鑽石如果拿來變現後，等值台幣可以買到多少金幣」。所以三種方案會用同一批鑽石作為基準比較。
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label for="diamond">輸入這批鑽石數</label>
+        <input id="diamond" type="number" min="0" step="1" value="50000" />
+      </div>
+      <div>
+        <label for="usdRate">美金匯率</label>
+        <input id="usdRate" type="number" min="0" step="0.001" value="31.405" />
+        <button class="action" id="fetchBotRate">抓台銀即期賣出匯率</button>
+        <div class="small" id="rateStatus">預設：台銀參考美元即期賣出 31.405。若平台實際入帳匯率不同，請手動修正。</div>
+        <div class="small"><a href="https://rate.bot.com.tw/xrt?Lang=zh-TW" target="_blank">打開台灣銀行牌告匯率</a></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div>
+        <label for="fee">提領耗損 %</label>
+        <input id="fee" type="number" min="0" step="0.1" value="8" />
+      </div>
+      <div>
+        <label for="sellerThreshold">幣商 50 倍門檻</label>
+        <input id="sellerThreshold" type="number" min="0" step="1" value="10000" />
+      </div>
+    </div>
+
+    <div class="decision" id="decision">金幣最多：鑽石直接換金幣</div>
+  </div>
+
+  <div class="card">
+    <label>同等值鑽石，三種方式可拿到的金幣</label>
+    <div class="grid3">
+      <div class="result" id="directBox">
+        <div class="small">方案 A：鑽石直接換金幣｜不累積等級</div>
+        <div class="big" id="directCoins">16,000</div>
+        <div class="small" id="directFormula">50000 × 0.32</div>
+      </div>
+      <div class="result" id="officialBox">
+        <div class="small">方案 B：等值台幣去官方儲值｜可累積等級</div>
+        <div class="big" id="officialCoins">10,690</div>
+        <div class="small" id="officialFormula">等值台幣 × 37</div>
+      </div>
+      <div class="result" id="sellerBox">
+        <div class="small">方案 C：等值台幣去幣商儲值｜可累積等級</div>
+        <div class="big" id="sellerCoins">13,869</div>
+        <div class="small" id="sellerFormula">等值台幣 × 48 / 50</div>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr><th>比較項目</th><th>差距</th><th>意思</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>鑽石直接換 vs 官方儲值</td><td id="gapDirectOfficial">多 5,310</td><td id="gapDirectOfficialText">鑽石直接換比較多</td></tr>
+        <tr><td>鑽石直接換 vs 幣商儲值</td><td id="gapDirectSeller">多 2,131</td><td id="gapDirectSellerText">鑽石直接換比較多</td></tr>
+        <tr><td>幣商儲值 vs 官方儲值</td><td id="gapSellerOfficial">多 3,179</td><td id="gapSellerOfficialText">幣商儲值比較多</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <label>這批鑽石的提領等值</label>
+    <div class="grid">
+      <div class="result">
+        <div class="small">鑽石可換美金</div>
+        <div class="big" id="usd">$10</div>
+        <div class="small" id="usdFormula">50000 ÷ 5000 = 10 USD</div>
+      </div>
+      <div class="result">
+        <div class="small">扣手續費後，等值台幣約</div>
+        <div class="big" id="twd">NT$288.93</div>
+        <div class="small" id="twdFormula">10 × 31.405 × 92% = 288.93 TWD</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <label>單純輸入台幣，換算儲值後金幣</label>
+    <div class="grid">
+      <div>
+        <label for="cashTwd">輸入台幣金額</label>
+        <input id="cashTwd" type="number" min="0" step="1" value="10000" />
+      </div>
+      <div class="result">
+        <div class="small">幣商倍率判斷</div>
+        <div class="big" id="cashSellerRate">50 倍</div>
+        <div class="small" id="cashSellerRateText">滿 10000 台幣，1 元 = 50 金幣</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="result">
+        <div class="small">官方儲值｜可累積等級</div>
+        <div class="big" id="cashOfficialCoins">370,000 金幣</div>
+        <div class="small" id="cashOfficialFormula">10000 × 37 = 370000</div>
+      </div>
+      <div class="result win">
+        <div class="small">幣商儲值｜可累積等級</div>
+        <div class="big" id="cashSellerCoins">500,000 金幣</div>
+        <div class="small" id="cashSellerFormula">10000 × 50 = 500000</div>
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="small">幣商比官方多拿</div>
+      <div class="big profit" id="cashGap">多 130,000 金幣</div>
+      <div class="small" id="cashGapFormula">500000 - 370000 = 130000</div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <label>快速鑽石表</label>
+    <div class="preset"><div class="coins">5,000 鑽石</div><button class="diamondBtn" data-diamond="5000">套用</button></div>
+    <div class="preset"><div class="coins">15,000 鑽石</div><button class="diamondBtn" data-diamond="15000">套用</button></div>
+    <div class="preset"><div class="coins">50,000 鑽石</div><button class="diamondBtn" data-diamond="50000">套用</button></div>
+    <div class="preset"><div class="coins">250,000 鑽石</div><button class="diamondBtn" data-diamond="250000">套用</button></div>
+    <div class="preset"><div class="coins">500,000 鑽石</div><button class="diamondBtn" data-diamond="500000">套用</button></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n).toLocaleString('en-US', {maximumFractionDigits:0});
+const fmt2 = n => Number(n).toLocaleString('en-US', {maximumFractionDigits:2});
+
+function setGap(idNum, idText, aName, bName, a, b){
+  const diff = a - b;
+  if(diff >= 0){
+    $(idNum).textContent = `${aName}多 ${fmt(diff)} 金幣`;
+    $(idText).textContent = `${aName}比較多`;
+  }else{
+    $(idNum).textContent = `${bName}多 ${fmt(Math.abs(diff))} 金幣`;
+    $(idText).textContent = `${bName}比較多`;
+  }
+}
+
+function calc(){
+  const diamond = Math.max(0, Number($('diamond').value || 0));
+  const usdRate = Math.max(0, Number($('usdRate').value || 0));
+  const fee = Math.max(0, Number($('fee').value || 0));
+  const threshold = Math.max(0, Number($('sellerThreshold').value || 0));
+
+  const usd = diamond / 5000;
+  const twd = usd * usdRate * (1 - fee/100);
+
+  const directCoins = diamond * 0.32;
+  const officialCoins = twd * 37;
+  const sellerRate = twd >= threshold ? 50 : 48;
+  const sellerCoins = twd * sellerRate;
+
+  const options = [
+    {key:'direct', name:'鑽石直接換金幣', coins:directCoins, box:'directBox'},
+    {key:'official', name:'官方儲值', coins:officialCoins, box:'officialBox'},
+    {key:'seller', name:'幣商儲值', coins:sellerCoins, box:'sellerBox'}
+  ].sort((a,b)=>b.coins-a.coins);
+
+  ['directBox','officialBox','sellerBox'].forEach(id => $(id).className='result');
+  $(options[0].box).className = 'result win';
+  $(options[1].box).className = 'result mid';
+  $(options[2].box).className = 'result lose';
+
+  $('decision').textContent = `金幣最多：${options[0].name}（比第二名多 ${fmt(options[0].coins - options[1].coins)} 金幣）`;
+
+  $('directCoins').textContent = fmt(directCoins) + ' 金幣';
+  $('directFormula').textContent = `${fmt(diamond)} × 0.32 = ${fmt(directCoins)}`;
+
+  $('officialCoins').textContent = fmt(officialCoins) + ' 金幣';
+  $('officialFormula').textContent = `NT$${fmt2(twd)} × 37 = ${fmt(officialCoins)}`;
+
+  $('sellerCoins').textContent = fmt(sellerCoins) + ' 金幣';
+  $('sellerFormula').textContent = `NT$${fmt2(twd)} × ${sellerRate} = ${fmt(sellerCoins)}`;
+
+  $('usd').textContent = '$' + fmt2(usd);
+  $('usdFormula').textContent = `${fmt(diamond)} ÷ 5000 = ${fmt2(usd)} USD`;
+  $('twd').textContent = 'NT$' + fmt2(twd);
+  $('twdFormula').textContent = `${fmt2(usd)} × ${fmt2(usdRate)} × ${fmt2(100-fee)}% = ${fmt2(twd)} TWD`;
+
+  setGap('gapDirectOfficial','gapDirectOfficialText','鑽石直接換','官方儲值',directCoins,officialCoins);
+  setGap('gapDirectSeller','gapDirectSellerText','鑽石直接換','幣商儲值',directCoins,sellerCoins);
+  setGap('gapSellerOfficial','gapSellerOfficialText','幣商儲值','官方儲值',sellerCoins,officialCoins);
+}
+
+
+function calcCash(){
+  const cash = Math.max(0, Number($('cashTwd').value || 0));
+  const official = cash * 37;
+  const sellerRate = cash >= 10000 ? 50 : 48;
+  const seller = cash * sellerRate;
+  const gap = seller - official;
+
+  $('cashSellerRate').textContent = sellerRate + ' 倍';
+  $('cashSellerRateText').textContent = sellerRate === 50 ? '滿 10000 台幣，1 元 = 50 金幣' : '未滿 10000 台幣，1 元 = 48 金幣';
+
+  $('cashOfficialCoins').textContent = fmt(official) + ' 金幣';
+  $('cashOfficialFormula').textContent = `${fmt(cash)} × 37 = ${fmt(official)}`;
+
+  $('cashSellerCoins').textContent = fmt(seller) + ' 金幣';
+  $('cashSellerFormula').textContent = `${fmt(cash)} × ${sellerRate} = ${fmt(seller)}`;
+
+  $('cashGap').textContent = `多 ${fmt(gap)} 金幣`;
+  $('cashGapFormula').textContent = `${fmt(seller)} - ${fmt(official)} = ${fmt(gap)}`;
+}
+
+async function fetchBotRate(){
+  const status = $('rateStatus');
+  status.textContent = '正在嘗試抓取台銀匯率...';
+  try{
+    const target = encodeURIComponent('https://rate.bot.com.tw/xrt?Lang=zh-TW');
+    const res = await fetch('https://api.allorigins.win/raw?url=' + target);
+    if(!res.ok) throw new Error('fetch failed');
+    const text = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const rows = [...doc.querySelectorAll('tr')];
+    let found = null;
+    for(const row of rows){
+      const rowText = row.textContent.replace(/\s+/g,' ');
+      if(rowText.includes('美金') || rowText.includes('USD')){
+        const nums = [...rowText.matchAll(/\d+\.\d+/g)].map(m => Number(m[0]));
+        if(nums.length >= 4){ found = nums[3]; break; }
+      }
+    }
+    if(!found) throw new Error('rate not found');
+    $('usdRate').value = found;
+    status.textContent = '已抓取台銀美元即期賣出匯率：' + found + '。若平台實際入帳匯率不同，請手動修正。';
+    calc();
+  }catch(e){
+    status.textContent = '自動抓取失敗，可能是瀏覽器或跨網域限制。已保留預設匯率，或可點下方連結到台銀查詢後手動輸入。';
+  }
+}
+
+['diamond','usdRate','fee','sellerThreshold'].forEach(id => $(id).addEventListener('input', calc));
+$('cashTwd').addEventListener('input', calcCash);
+$('fetchBotRate').addEventListener('click', fetchBotRate);
+document.querySelectorAll('[data-diamond]').forEach(btn=>{
+  btn.addEventListener('click',()=>{$('diamond').value=btn.dataset.diamond; calc(); window.scrollTo({top:0,behavior:'smooth'});});
+});
+calc();
+calcCash();
+</script>
+</body>
+</html>
