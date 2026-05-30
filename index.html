@@ -3,30 +3,30 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>主播鑽石等值金幣比較工具</title>
+<title>SUGO 主播鑽石金幣比較工具</title>
 <style>
-  :root{--blue:#1da9ff;--dark:#101828;--muted:#667085;--line:#e5e7eb;--green:#079455;--red:#d92d20;--amber:#b54708}
+  :root{--blue:#7b2cff;--cyan:#12d6ff;--pink:#ff4fd8;--dark:#17122f;--muted:#706a86;--line:#eee9fb;--green:#7b2cff;--red:#ff4f9a;--amber:#8a4b00}
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;background:linear-gradient(180deg,#2da8ff 0%,#eef7ff 38%,#f8fbff 100%);color:var(--dark);min-height:100vh;padding:18px}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;background:linear-gradient(180deg,#9b6dff 0%,#b884ff 32%,#f7efff 100%);color:var(--dark);min-height:100vh;padding:18px}
   .wrap{max-width:980px;margin:0 auto}
   .hero{color:#fff;margin:8px 0 18px}.hero h1{font-size:28px;margin:0 0 8px;font-weight:900}.hero p{margin:0;opacity:.94;line-height:1.55}
-  .card{background:rgba(255,255,255,.97);border-radius:28px;padding:22px;box-shadow:0 18px 45px rgba(16,24,40,.14);margin-bottom:16px}
+  .card{background:rgba(255,255,255,.96);border-radius:28px;padding:22px;box-shadow:0 18px 45px rgba(16,24,40,.14);margin-bottom:16px}
   .rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-  .rate{background:#e9f7ff;border:1px solid #cceeff;border-radius:16px;padding:12px 14px;color:#0369a1;font-weight:800;font-size:14px}
+  .rate{background:linear-gradient(135deg,rgba(18,214,255,.14),rgba(255,79,216,.12));border:1px solid #eadcff;border-radius:16px;padding:12px 14px;color:#5b21b6;font-weight:800;font-size:14px}
   label{display:block;font-weight:900;margin:14px 0 8px}
   input{width:100%;border:1px solid #d0d5dd;border-radius:16px;padding:14px 15px;font-size:19px;font-weight:800;outline:none;background:#fff}
   input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(29,169,255,.16)}
-  button.action{width:100%;border:none;border-radius:16px;padding:14px 15px;font-size:16px;font-weight:900;background:#008ee6;color:white;cursor:pointer;margin-top:8px}
+  button.action{width:100%;border:none;border-radius:16px;padding:14px 15px;font-size:16px;font-weight:900;background:linear-gradient(135deg,#12d6ff,#7b2cff,#ff4fd8);color:white;cursor:pointer;margin-top:8px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
   .result{margin-top:18px;border-radius:22px;background:#f9fafb;border:1px solid var(--line);padding:17px}
-  .big{font-size:29px;line-height:1.2;font-weight:950;color:#008ee6;word-break:break-all}.small{color:var(--muted);font-size:14px;margin-top:6px;line-height:1.55}
-  .win{background:#ecfdf3;border-color:#abefc6}.win .big{color:var(--green)}
-  .lose{background:#fff1f3;border-color:#fecdd6}.lose .big{color:var(--red)}
-  .mid{background:#fffaeb;border-color:#fedf89}
+  .big{font-size:29px;line-height:1.2;font-weight:950;color:#7b2cff;word-break:break-all}.small{color:var(--muted);font-size:14px;margin-top:6px;line-height:1.55}
+  .win{background:linear-gradient(135deg,rgba(18,214,255,.18),rgba(255,79,216,.14));border-color:#d9c2ff}.win .big{color:#7b2cff}
+  .lose{background:#fff6fd;border-color:#f7d2ef}.lose .big{color:#ff4fd8}
+  .mid{background:#fbf7ff;border-color:#eadcff}
   .profit{color:var(--green);font-weight:950}
-  .decision{border-radius:24px;padding:18px;margin-top:18px;font-weight:900;font-size:22px;line-height:1.45;background:#ecfdf3;color:var(--green);border:1px solid #abefc6}
-  .warn{background:#fffaeb;border:1px solid #fedf89;color:#93370d;border-radius:22px;padding:17px;font-weight:900;line-height:1.55;margin-top:16px}
+  .decision{border-radius:24px;padding:18px;margin-top:18px;font-weight:900;font-size:22px;line-height:1.45;background:linear-gradient(135deg,rgba(18,214,255,.16),rgba(255,79,216,.14));color:#5b21b6;border:1px solid #eadcff}
+  .warn{background:#fbf7ff;border:1px solid #eadcff;color:#5b21b6;border-radius:22px;padding:17px;font-weight:900;line-height:1.55;margin-top:16px}
   .table{width:100%;border-collapse:separate;border-spacing:0 10px;margin-top:10px}
   .table th{text-align:left;color:#667085;font-size:13px}
   .table td{background:#f9fafb;padding:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:800}
@@ -34,24 +34,25 @@
   .table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
   .preset{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}.preset:last-child{border-bottom:none}
   .coins{font-size:21px;font-weight:950}.diamondBtn{justify-self:end;border:none;border-radius:999px;padding:10px 15px;background:#dff5ff;color:#10a8f5;font-size:19px;font-weight:950;cursor:pointer}
-  a{color:#008ee6;font-weight:800;text-decoration:none}
+  a{color:#7b2cff;font-weight:800;text-decoration:none}
   @media(max-width:760px){.rates,.grid,.grid3{grid-template-columns:1fr}.card{padding:17px;border-radius:24px}.hero h1{font-size:24px}.big{font-size:26px}.table{font-size:13px}.table td{padding:11px 8px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <h1>主播鑽石等值金幣比較工具</h1>
-    <p>輸入同一批鑽石，系統會先換算成可提領台幣，再比較：直接用鑽石換金幣、拿等值台幣去官方儲值、拿等值台幣去幣商儲值，各自可以得到多少金幣。</p>
+    <h1>TW-QQ 主播金幣換算工具</h1><p style='font-size:20px;font-weight:800;margin-top:8px;'>公會：40563</p>
+    <p>輸入同一批鑽石，直接比較：鑽石換金幣、官方儲值、幣商儲值，哪一種拿到的金幣最多。</p>
   </div>
 
   <div class="card">
     <div class="rates">
       <div class="rate">鑽石直接換：5000 鑽石 = 1600 金幣</div>
-      <div class="rate">鑽石提領：5000 鑽石 = 1 美元</div>
+      <div class="rate">鑽石提領：250,000 鑽石 = 1 美元 USD USD</div>
       <div class="rate">官方儲值：1 台幣 = 37 金幣</div>
       <div class="rate">幣商儲值：10000 以下 48 倍，10000 以上 50 倍</div>
       <div class="rate">提領台幣約扣 8% 手續費</div>
+      <div class="rate">注意：250,000 鑽石 = 1 美元 USD，不是台幣</div>
       <div class="rate">官方與幣商儲值可累積等級；鑽石換金幣不累積等級</div>
     </div>
 
@@ -121,66 +122,8 @@
     </table>
   </div>
 
-  <div class="card">
-    <label>這批鑽石的提領等值</label>
-    <div class="grid">
-      <div class="result">
-        <div class="small">鑽石可換美金</div>
-        <div class="big" id="usd">$10</div>
-        <div class="small" id="usdFormula">50000 ÷ 5000 = 10 USD</div>
-      </div>
-      <div class="result">
-        <div class="small">扣手續費後，等值台幣約</div>
-        <div class="big" id="twd">NT$288.93</div>
-        <div class="small" id="twdFormula">10 × 31.405 × 92% = 288.93 TWD</div>
-      </div>
-    </div>
-  </div>
 
 
-  <div class="card">
-    <label>單純輸入台幣，換算儲值後金幣</label>
-    <div class="grid">
-      <div>
-        <label for="cashTwd">輸入台幣金額</label>
-        <input id="cashTwd" type="number" min="0" step="1" value="10000" />
-      </div>
-      <div class="result">
-        <div class="small">幣商倍率判斷</div>
-        <div class="big" id="cashSellerRate">50 倍</div>
-        <div class="small" id="cashSellerRateText">滿 10000 台幣，1 元 = 50 金幣</div>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="result">
-        <div class="small">官方儲值｜可累積等級</div>
-        <div class="big" id="cashOfficialCoins">370,000 金幣</div>
-        <div class="small" id="cashOfficialFormula">10000 × 37 = 370000</div>
-      </div>
-      <div class="result win">
-        <div class="small">幣商儲值｜可累積等級</div>
-        <div class="big" id="cashSellerCoins">500,000 金幣</div>
-        <div class="small" id="cashSellerFormula">10000 × 50 = 500000</div>
-      </div>
-    </div>
-
-    <div class="result">
-      <div class="small">幣商比官方多拿</div>
-      <div class="big profit" id="cashGap">多 130,000 金幣</div>
-      <div class="small" id="cashGapFormula">500000 - 370000 = 130000</div>
-    </div>
-  </div>
-
-
-  <div class="card">
-    <label>快速鑽石表</label>
-    <div class="preset"><div class="coins">5,000 鑽石</div><button class="diamondBtn" data-diamond="5000">套用</button></div>
-    <div class="preset"><div class="coins">15,000 鑽石</div><button class="diamondBtn" data-diamond="15000">套用</button></div>
-    <div class="preset"><div class="coins">50,000 鑽石</div><button class="diamondBtn" data-diamond="50000">套用</button></div>
-    <div class="preset"><div class="coins">250,000 鑽石</div><button class="diamondBtn" data-diamond="250000">套用</button></div>
-    <div class="preset"><div class="coins">500,000 鑽石</div><button class="diamondBtn" data-diamond="500000">套用</button></div>
-  </div>
 </div>
 
 <script>
@@ -205,7 +148,7 @@ function calc(){
   const fee = Math.max(0, Number($('fee').value || 0));
   const threshold = Math.max(0, Number($('sellerThreshold').value || 0));
 
-  const usd = diamond / 5000;
+  const usd = diamond / 250000;
   const twd = usd * usdRate * (1 - fee/100);
 
   const directCoins = diamond * 0.32;
@@ -236,7 +179,7 @@ function calc(){
   $('sellerFormula').textContent = `NT$${fmt2(twd)} × ${sellerRate} = ${fmt(sellerCoins)}`;
 
   $('usd').textContent = '$' + fmt2(usd);
-  $('usdFormula').textContent = `${fmt(diamond)} ÷ 5000 = ${fmt2(usd)} USD`;
+  $('usdFormula').textContent = `${fmt(diamond)} ÷ 250000 = ${fmt2(usd)} USD`;
   $('twd').textContent = 'NT$' + fmt2(twd);
   $('twdFormula').textContent = `${fmt2(usd)} × ${fmt2(usdRate)} × ${fmt2(100-fee)}% = ${fmt2(twd)} TWD`;
 
@@ -301,8 +244,6 @@ async function fetchBotRate(){
 ['diamond','usdRate','fee','sellerThreshold'].forEach(id => $(id).addEventListener('input', calc));
 $('cashTwd').addEventListener('input', calcCash);
 $('fetchBotRate').addEventListener('click', fetchBotRate);
-document.querySelectorAll('[data-diamond]').forEach(btn=>{
-  btn.addEventListener('click',()=>{$('diamond').value=btn.dataset.diamond; calc(); window.scrollTo({top:0,behavior:'smooth'});});
 });
 calc();
 calcCash();
