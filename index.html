@@ -69,9 +69,9 @@
       <div>
         <label for="usdRate">美金匯率</label>
         <input id="usdRate" type="number" min="0" step="0.001" value="31.405" />
-        <button class="action" id="fetchBotRate">抓台銀即期賣出匯率</button>
-        <div class="small" id="rateStatus">預設：台銀參考美元即期賣出 31.405。若平台實際入帳匯率不同，請手動修正。</div>
-        <div class="small"><a href="https://rate.bot.com.tw/xrt?Lang=zh-TW" target="_blank">打開台灣銀行牌告匯率</a></div>
+        <button class="action" id="fetchBotRate">快速抓 USD→TWD 匯率</button>
+        <div class="small" id="rateStatus">預設匯率 31.405。可按上方快速抓取網路 USD→TWD 匯率；若平台實際入帳匯率不同，請手動修正。</div>
+        <div class="small">來源為公開匯率 API，實際入帳仍以平台或銀行匯率為準。</div>
       </div>
     </div>
 
@@ -268,30 +268,34 @@ function calcCash(){
 
 async function fetchBotRate(){
   const status = $('rateStatus');
-  status.textContent = '正在嘗試抓取台銀匯率...';
-  try{
-    const target = encodeURIComponent('https://rate.bot.com.tw/xrt?Lang=zh-TW');
-    const res = await fetch('https://api.allorigins.win/raw?url=' + target);
-    if(!res.ok) throw new Error('fetch failed');
-    const text = await res.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, 'text/html');
-    const rows = [...doc.querySelectorAll('tr')];
-    let found = null;
-    for(const row of rows){
-      const rowText = row.textContent.replace(/\s+/g,' ');
-      if(rowText.includes('美金') || rowText.includes('USD')){
-        const nums = [...rowText.matchAll(/\d+\.\d+/g)].map(m => Number(m[0]));
-        if(nums.length >= 4){ found = nums[3]; break; }
+  status.textContent = '正在快速抓取 USD→TWD 匯率...';
+  const apis = [
+    'https://open.er-api.com/v6/latest/USD',
+    'https://api.frankfurter.app/latest?from=USD&to=TWD'
+  ];
+
+  for(const url of apis){
+    try{
+      const res = await fetch(url, {cache:'no-store'});
+      if(!res.ok) throw new Error('fetch failed');
+      const data = await res.json();
+      let rate = null;
+
+      if(data && data.rates && data.rates.TWD){
+        rate = Number(data.rates.TWD);
       }
-    }
-    if(!found) throw new Error('rate not found');
-    $('usdRate').value = found;
-    status.textContent = '已抓取台銀美元即期賣出匯率：' + found + '。若平台實際入帳匯率不同，請手動修正。';
-    calc();
-  }catch(e){
-    status.textContent = '自動抓取失敗，可能是瀏覽器或跨網域限制。已保留預設匯率，或可點下方連結到台銀查詢後手動輸入。';
+
+      if(rate && rate > 0){
+        $('usdRate').value = rate.toFixed(3);
+        const sourceName = url.includes('er-api') ? 'ExchangeRate-API' : 'Frankfurter';
+        status.textContent = `已抓取 ${sourceName} USD→TWD 匯率：${rate.toFixed(3)}。實際入帳匯率仍以平台或銀行為準。`;
+        calc();
+        return;
+      }
+    }catch(e){}
   }
+
+  status.textContent = '自動抓取失敗，已保留目前匯率。你仍可手動輸入平台實際入帳匯率。';
 }
 
 ['diamond','usdRate','fee','sellerThreshold'].forEach(id => $(id).addEventListener('input', calc));
