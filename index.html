@@ -1,252 +1,1287 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SUGO 主播鑽石金幣比較工具</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Life｜每日營業日報三頁版</title>
 <style>
-  :root{--blue:#7b2cff;--cyan:#12d6ff;--pink:#ff4fd8;--dark:#17122f;--muted:#706a86;--line:#eee9fb;--green:#7b2cff;--red:#ff4f9a;--amber:#8a4b00}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",Arial,sans-serif;background:linear-gradient(180deg,#9b6dff 0%,#b884ff 32%,#f7efff 100%);color:var(--dark);min-height:100vh;padding:18px}
-  .wrap{max-width:980px;margin:0 auto}
-  .hero{color:#fff;margin:8px 0 18px}.hero h1{font-size:28px;margin:0 0 8px;font-weight:900}.hero p{margin:0;opacity:.94;line-height:1.55}
-  .card{background:rgba(255,255,255,.96);border-radius:28px;padding:22px;box-shadow:0 18px 45px rgba(16,24,40,.14);margin-bottom:16px}
-  .rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-  .rate{background:linear-gradient(135deg,rgba(18,214,255,.14),rgba(255,79,216,.12));border:1px solid #eadcff;border-radius:16px;padding:12px 14px;color:#5b21b6;font-weight:800;font-size:14px}
-  label{display:block;font-weight:900;margin:14px 0 8px}
-  input{width:100%;border:1px solid #d0d5dd;border-radius:16px;padding:14px 15px;font-size:19px;font-weight:800;outline:none;background:#fff}
-  input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(29,169,255,.16)}
-  button.action{width:100%;border:none;border-radius:16px;padding:14px 15px;font-size:16px;font-weight:900;background:linear-gradient(135deg,#12d6ff,#7b2cff,#ff4fd8);color:white;cursor:pointer;margin-top:8px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-  .result{margin-top:18px;border-radius:22px;background:#f9fafb;border:1px solid var(--line);padding:17px}
-  .big{font-size:29px;line-height:1.2;font-weight:950;color:#7b2cff;word-break:break-all}.small{color:var(--muted);font-size:14px;margin-top:6px;line-height:1.55}
-  .win{background:linear-gradient(135deg,rgba(18,214,255,.18),rgba(255,79,216,.14));border-color:#d9c2ff}.win .big{color:#7b2cff}
-  .lose{background:#fff6fd;border-color:#f7d2ef}.lose .big{color:#ff4fd8}
-  .mid{background:#fbf7ff;border-color:#eadcff}
-  .profit{color:var(--green);font-weight:950}
-  .decision{border-radius:24px;padding:18px;margin-top:18px;font-weight:900;font-size:22px;line-height:1.45;background:linear-gradient(135deg,rgba(18,214,255,.16),rgba(255,79,216,.14));color:#5b21b6;border:1px solid #eadcff}
-  .warn{background:#fbf7ff;border:1px solid #eadcff;color:#5b21b6;border-radius:22px;padding:17px;font-weight:900;line-height:1.55;margin-top:16px}
-  .table{width:100%;border-collapse:separate;border-spacing:0 10px;margin-top:10px}
-  .table th{text-align:left;color:#667085;font-size:13px}
-  .table td{background:#f9fafb;padding:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:800}
-  .table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px}
-  .table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
-  .preset{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}.preset:last-child{border-bottom:none}
-  .coins{font-size:21px;font-weight:950}.diamondBtn{justify-self:end;border:none;border-radius:999px;padding:10px 15px;background:#dff5ff;color:#10a8f5;font-size:19px;font-weight:950;cursor:pointer}
-  a{color:#7b2cff;font-weight:800;text-decoration:none}
-  @media(max-width:760px){.rates,.grid,.grid3{grid-template-columns:1fr}.card{padding:17px;border-radius:24px}.hero h1{font-size:24px}.big{font-size:26px}.table{font-size:13px}.table td{padding:11px 8px}}
+:root{
+--bg:#F5F0E8;
+--card:#FFFDF8;
+--ink:#1A1A1A;
+--muted:#7A806F;
+--line:#D8CCB2;
+--brand:#2C3E2D;
+--primary:#2C3E2D;
+--brand2:#B8A882;
+--accent:#B8A882;
+--pink:#B8A882;
+--pinkbg:#F5F0E8;
+--danger:#B45309;
+--ok:#2C3E2D;
+--shadow:0 18px 45px rgba(26,26,26,.10);
+--radius:20px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;line-height:1.5}
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1280px;margin:0 auto;padding:14px 16px}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-size:22px;margin:0}
+.subtitle{margin:4px 0 0;color:var(--muted);font-size:13px;font-weight:700}
+.tabs{display:flex;gap:8px;overflow:auto;padding:10px 16px;background:#FFFDF8;border-bottom:1px solid var(--line)}
+.tab{border:1px solid var(--line);background:#FFFDF8;color:#111827;border-radius:999px;padding:10px 14px;font-weight:900;white-space:nowrap;cursor:pointer}
+.tab.active{background:var(--primary);color:#FFFDF8;border-color:var(--primary)}
+main{max-width:1280px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:16px}
+.card h2{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 12px;font-size:18px}
+.help{font-size:12px;color:var(--muted);font-weight:700;margin:6px 0 0}
+.note{background:#FFFDF81f8;border:1px solid var(--pinkline);color:#2C3E2D;border-radius:14px;padding:10px 12px;font-size:13px;font-weight:900;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.formgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.formgrid.two{grid-template-columns:repeat(2,1fr)}
+label{display:block;font-size:13px;font-weight:900;color:#374151;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #D8CCB2;border-radius:14px;padding:12px 14px;font-size:16px;background:#FFFDF8;color:#1A1A1A;outline:none}
+textarea{min-height:82px;resize:vertical}
+input[readonly],.readonly{background:#f3f4f6!important;border-color:#D8CCB2!important;font-weight:900;color:#374151}
+button{border:0;border-radius:12px;padding:11px 14px;min-height:42px;font-weight:900;cursor:pointer;background:#111827;color:#FFFDF8}
+button.primary{background:var(--primary)} button.secondary{background:#FFFDF8;color:#111827;border:1px solid var(--line)} button.danger{background:var(--danger)} button.small{padding:8px 10px;min-height:34px;font-size:13px;border-radius:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.kpi{border:2px solid #dbe4ee;border-radius:24px;background:#FFFDF8;padding:22px;min-height:210px}
+.kpi.green{background:var(--green);border-color:#a7f3d0} .kpi.orange{background:var(--orange);border-color:#D8CCB2}
+.kpi .name{font-size:20px;color:#7A806F;font-weight:950}
+.kpi .value{font-size:42px;font-weight:950;margin-top:18px;line-height:1.05}
+.kpi.green .value{color:#2C3E2D} .kpi.orange .value{color:#7A5F2A}
+.divider{height:1px;background:#cfd8e3;margin:24px 0 16px}
+.mini{display:flex;justify-content:space-between;gap:14px;font-size:18px;font-weight:950;color:#1A1A1A;line-height:1.7}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:980px;background:#FFFDF8}
+th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{background:#F5F0E8;color:#1A1A1A;font-size:13px;white-space:nowrap}
+td input,td select{padding:8px;min-height:38px;border-radius:9px;font-size:15px}
+.subtotal td{background:#F5F0E8!important;font-weight:950;color:#2C3E2D}
+.hidden{display:none!important}
+.statusbar{position:sticky;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px;z-index:10}
+.status-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.cash-alert{color:#B45309!important;background:#fef2f2!important;border-color:#fca5a5!important}
+.cash-ok{color:#2C3E2D!important}
+@media(max-width:980px){.summary{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+  body{background:#FFFDF8} header{position:relative} .wrap,main{padding-left:10px;padding-right:10px} h1{font-size:18px}
+  .summary,.formgrid,.formgrid.two,.grid{grid-template-columns:1fr} .kpi{min-height:auto;padding:18px;border-radius:20px} .kpi .value{font-size:38px}
+  .tabs{padding:8px 10px} .tab{font-size:14px;padding:10px 12px} .card{padding:13px;border-radius:16px}
+  .actions{width:100%;display:grid;grid-template-columns:1fr 1fr} .actions button{width:100%}
+  .table-wrap{overflow:visible;border:0} table{min-width:0!important;border:0;background:transparent} thead{display:none} tbody,tfoot{display:block}
+  tr{display:block;background:#FFFDF8;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;padding:8px;box-shadow:0 4px 12px rgba(15,23,42,.05)}
+  td,th{display:block;border:0!important;padding:7px 4px;min-width:0!important}
+  td::before{content:attr(data-label);display:block;font-size:12px;color:#6b7280;font-weight:950;margin-bottom:4px}
+  .status-inner>div:last-child{width:100%;display:flex;gap:8px} .status-inner button{flex:1}
+}
+@media(max-width:420px){.summary{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
+
+.confirm-pill{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900;background:#FFFDF87ed;color:#7A5F2A;border:1px solid #D8CCB2}
+.confirm-pill.done{background:#F5F0E8;color:#2C3E2D;border-color:#a7f3d0}
+
+
+.keyin-signoff-only{
+  grid-template-columns:1fr;
+}
+
+
+.locked-banner{
+  background:#F5F0E8;
+  border:1px solid #a7f3d0;
+  color:#2C3E2D;
+  border-radius:14px;
+  padding:10px 12px;
+  font-size:13px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+
+.settings-list{display:grid;gap:10px;margin-top:10px}
+.settings-list-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#F5F0E8;border:1px solid #B8A882;border-radius:14px;padding:10px}
+.settings-list-row input{background:#FFFDF8!important;border-color:#B8A882!important}
+.modal-mask{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-box{width:min(560px,100%);background:#FFFDF8;border-radius:22px;border:1px solid #D8CCB2;box-shadow:0 24px 80px rgba(15,23,42,.28);padding:20px}
+.modal-box h2{margin:0 0 8px;font-size:22px}
+.modal-summary{background:#F5F0E8;border:1px solid #D8CCB2;border-radius:14px;padding:12px;margin:12px 0;color:#1A1A1A;font-size:14px}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media(max-width:520px){.modal-actions{grid-template-columns:1fr}}
+
+@media print{header,.tabs,.statusbar,.no-print{display:none!important}body{background:#FFFDF8}main{padding:0}.card{box-shadow:none;break-inside:avoid}}
+
+/* ===== HAVEN tabs stability / manual page ===== */
+.tabs{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:12px 16px;
+  background:#F5F0E8;
+  border-bottom:1px solid #D8CCB2;
+  align-items:center;
+}
+.tab{
+  min-width:148px;
+  height:46px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #B8A882;
+  background:#FFFDF8;
+  color:#1A1A1A;
+  border-radius:999px;
+  padding:0 18px;
+  font-weight:900;
+  white-space:nowrap;
+  cursor:pointer;
+  line-height:1;
+  flex:0 0 auto;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.tab.active{
+  background:#2C3E2D;
+  color:#F5F0E8;
+  border-color:#2C3E2D;
+}
+.manual-hero{
+  background:#2C3E2D;
+  color:#F5F0E8;
+  border:1px solid #B8A882;
+  border-radius:24px;
+  padding:24px;
+  margin-bottom:16px;
+  box-shadow:0 18px 45px rgba(26,26,26,.12);
+}
+.manual-hero h2{color:#F5F0E8;margin-bottom:8px}
+.manual-hero p{color:#D8CCB2;font-weight:700;margin:0}
+.manual-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.manual-dark-box{
+  background:#213423;
+  color:#F5F0E8;
+  border:1px solid #B8A882;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 14px 34px rgba(26,26,26,.12);
+}
+.manual-dark-box h3{
+  margin:0 0 10px;
+  color:#F5F0E8;
+  font-size:18px;
+}
+.manual-dark-box p,
+.manual-dark-box li{
+  color:#E8DFCC;
+  font-weight:650;
+}
+.manual-dark-box ul,
+.manual-dark-box ol{margin:8px 0 0;padding-left:22px}
+.manual-pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:30px;
+  height:30px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#B8A882;
+  color:#1A1A1A;
+  font-weight:900;
+  margin-right:8px;
+}
+.manual-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border:1px solid #B8A882;
+  border-radius:16px;
+  margin-top:10px;
+}
+.manual-table th{
+  background:#1A1A1A;
+  color:#F5F0E8;
+}
+.manual-table td{
+  background:#FFFDF8;
+  color:#1A1A1A;
+}
+@media(max-width:780px){
+  .manual-grid{grid-template-columns:1fr}
+  .tab{min-width:132px;height:44px}
+}
+
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="hero">
-    <h1>TW-QQ 主播金幣換算工具</h1><p style='font-size:20px;font-weight:800;margin-top:8px;'>公會：40563</p>
-    <p>輸入同一批鑽石，直接比較：鑽石換金幣、官方儲值、幣商儲值，哪一種拿到的金幣最多。</p>
+<header>
+  <div class="wrap topbar">
+    <div>
+      <h1>Power Life｜每日營業日報</h1>
+      <p class="subtitle">五頁版：① Key in 資料　② 當天累積 / 結帳　③ 區間總和　④ 設定　⑤ 使用說明</p>
+    </div>
+    <div class="actions no-print">
+      <button class="secondary" onclick="window.print()">列印 / PDF</button>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs no-print">
+  <button class="tab active" onclick="showPage('keyin',this)">① Key in 資料</button>
+  <button class="tab" onclick="showPage('today',this)">② 當天累積 / 結帳</button>
+  <button class="tab" onclick="showPage('month',this)">③ 每月總和</button>
+  <button class="tab" onclick="showPage('setting',this)">④ 設定</button>
+  <button class="tab" onclick="showPage('manual',this)">⑤ 使用說明</button>
+</nav>
+
+<main>
+<section id="page-keyin">
+  <div class="note">使用方式：同仁 Key 完每一筆收入 / 支出後要按「確認」，確認後才會進入當天累積。來客數、班別人員、日報備註、課程 / 票券統計與刪除資料都在「當天累積 / 結帳」頁查看與處理。</div>
+
+  <div class="card">
+    <h2>基本資料</h2>
+    <div class="formgrid">
+      <div><label>日期</label><input type="date" id="date"></div>
+      <div><label>星期</label><input id="weekday" readonly></div>
+      <div><label>館別 / 公司</label><input id="branch" value="Power Life" readonly><p class="help">固定名稱，不需修改。</p></div>
+      <input type="hidden" id="reporter" value="">
+      <input type="hidden" id="visitorCount" value="0">
+      <input type="hidden" id="newGuestCount" value="0">
+      <input type="hidden" id="memberGuestCount" value="0">
+      <input type="hidden" id="ticketUsed" value="0">
+      <input type="hidden" id="totalGuestCount" value="0">
+      <input type="hidden" id="morningStaff" value="">
+      <input type="hidden" id="nightStaff" value="">
+      <input type="hidden" id="dailyNote" value="">
+    </div>
   </div>
 
   <div class="card">
-    <div class="rates">
-      <div class="rate">鑽石直接換：5000 鑽石 = 1600 金幣</div>
-      <div class="rate">鑽石提領：250,000 鑽石 = 1 美元 USD USD</div>
-      <div class="rate">官方儲值：1 台幣 = 37 金幣</div>
-      <div class="rate">幣商儲值：10000 以下 48 倍，10000 以上 50 倍</div>
-      <div class="rate">提領台幣約扣 8% 手續費</div>
-      <div class="rate">注意：250,000 鑽石 = 1 美元 USD，不是台幣</div>
-      <div class="rate">官方與幣商儲值可累積等級；鑽石換金幣不累積等級</div>
-    </div>
-
-    <div class="warn">
-      閱讀方式：這不是問「我要儲多少台幣」，而是問「這批鑽石如果拿來變現後，等值台幣可以買到多少金幣」。所以三種方案會用同一批鑽石作為基準比較。
+    <h2>收入明細 <button class="small primary no-print" onclick="addIncomeRow()">＋新增一筆收入</button></h2>
+    <p class="help">主要填寫區：每成交一筆可先 Key，填完該筆後請按「確認」。確認後會進入「當天累積 / 結帳」。</p>
+    <div class="table-wrap">
+      <table id="incomeTable">
+        <thead><tr><th>#</th><th>發票品項</th><th>收款方式</th><th>收入金額</th><th>售出券編號</th><th>新會員卡編號</th><th>售出產品內容</th><th>贈品內容</th><th>銷售員 / 課程人員</th><th>備註</th><th>狀態</th><th class="no-print">確認</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
   <div class="card">
-    <div class="grid">
-      <div>
-        <label for="diamond">輸入這批鑽石數</label>
-        <input id="diamond" type="number" min="0" step="1" value="50000" />
-      </div>
-      <div>
-        <label for="usdRate">美金匯率</label>
-        <input id="usdRate" type="number" min="0" step="0.001" value="31.405" />
-        <button class="action" id="fetchBotRate">快速抓 USD→TWD 匯率</button>
-        <div class="small" id="rateStatus">預設匯率 31.405。可按上方快速抓取網路 USD→TWD 匯率；若平台實際入帳匯率不同，請手動修正。</div>
-        <div class="small">來源為公開匯率 API，實際入帳仍以平台或銀行匯率為準。</div>
+    <h2>支出明細 <button class="small primary no-print" onclick="addExpenseRow()">＋新增一筆支出</button></h2>
+    <p class="help">今天有支出就 Key 一筆，並填寫支出 Key in 人員；填完該筆後請按「確認」。確認後會進入「當天累積 / 結帳」。</p>
+    <div class="table-wrap">
+      <table id="expenseTable">
+        <thead><tr><th>#</th><th>支出品項</th><th>金額</th><th>付款方式</th><th>支出 Key in 人員</th><th>備註</th><th>狀態</th><th class="no-print">確認</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  
+
+  </section>
+
+<section id="page-today" class="hidden">
+  <div class="card">
+    <h2>當天累積 / 結帳 <span class="help">顯示已確認的 Key in 資料；總來客數在這裡自動累積</span></h2>
+    <div class="summary">
+    <div class="kpi green">
+      <div class="name">本日總營業額</div><div class="value" id="kpiTotal">$0</div><div class="divider"></div>
+      <div class="mini"><span>現金</span><strong id="kpiCash">$0</strong></div>
+      <div class="mini"><span>刷卡</span><strong id="kpiCard">$0</strong></div>
+      <div class="mini"><span>匯款</span><strong id="kpiTransfer">$0</strong></div>
+      <div class="mini"><span>其他</span><strong id="kpiOther">$0</strong></div>
+    </div>
+    <div class="kpi orange">
+      <div class="name">支出總額</div><div class="value" id="kpiExpense">$0</div><div class="divider"></div>
+      <div id="kpiExpenseList"><div class="mini"><span>尚無支出</span><strong>$0</strong></div></div>
+    </div>
+    <div class="kpi">
+      <div class="name">今日總來客數</div><div class="value" id="kpiGuests">0</div><div class="divider"></div>
+      <div class="mini"><span>會員來客</span><strong id="kpiMember">0</strong></div>
+      <div class="mini"><span>票券使用</span><strong id="kpiTicketUsed">0</strong></div>
+      <div class="mini"><span>新客</span><strong id="kpiNew">0</strong></div>
+      <div class="mini"><span>訪客</span><strong id="kpiVisitor">0</strong></div>
+    </div>
+    <div class="kpi">
+      <div class="name">今日銷售筆數</div><div class="value" id="kpiSalesCount">0</div><div class="divider"></div>
+      <div id="kpiSalesList"><div class="mini"><span>尚無銷售</span><strong>0 筆</strong></div></div>
+    </div>
+  </div>
+
+  
+  </div>
+    <div class="card"><h2>銷售人員累積清單</h2><div class="table-wrap"><table id="salesSummaryTable"><thead><tr><th>銷售人員</th><th>銷售品項 / 內容</th><th>收款方式</th><th>金額</th><th>券號 / 卡號</th><th>贈品</th><th>備註</th></tr></thead><tbody></tbody></table></div></div>
+  <div class="card"><h2>收入明細累積</h2><div class="table-wrap"><table id="todayIncomeTable"><thead><tr><th>#</th><th>發票品項</th><th>收款方式</th><th>收入金額</th><th>售出券編號</th><th>新會員卡編號</th><th>產品內容</th><th>贈品</th><th>銷售員</th><th>備註</th><th class="no-print">刪除</th></tr></thead><tbody></tbody></table></div></div>
+  <div class="card"><h2>支出明細累積</h2><div class="table-wrap"><table id="todayExpenseTable"><thead><tr><th>#</th><th>支出品項</th><th>金額</th><th>付款方式</th><th>支出 Key in 人員</th><th>備註</th><th class="no-print">刪除</th></tr></thead><tbody></tbody></table></div></div>
+    <div class="card">
+      <h2>課程 / 票券統計</h2>
+      <p class="help">自動由已確認的收入明細品項 / 內容判斷；此區放在當天累積 / 結帳頁，供下班前檢查。</p>
+      <div class="formgrid two">
+        <div><label>包月</label><input id="pkgMonth" readonly></div>
+        <div><label>包季</label><input id="pkgSeason" readonly></div>
+        <div><label>包年</label><input id="pkgYear" readonly></div>
+        <div><label>售券</label><input id="ticketSold" readonly></div>
+        <div><label>教練課</label><input id="ptClass" readonly></div>
+        <div><label>產品</label><input id="productQty" readonly></div>
       </div>
     </div>
 
-    <div class="grid">
-      <div>
-        <label for="fee">提領耗損 %</label>
-        <input id="fee" type="number" min="0" step="0.1" value="8" />
-      </div>
-      <div>
-        <label for="sellerThreshold">幣商 50 倍門檻</label>
-        <input id="sellerThreshold" type="number" min="0" step="1" value="10000" />
+  <div class="card">
+    <h2>當日結帳 / 現金對帳</h2>
+    <p class="help">此區放在當天累積頁最下面。下班結帳時填開店現金與閉店現金，系統會自動比對現金差異。</p>
+    <div class="formgrid">
+      <div><label>開店現金</label><input type="number" id="openCash" value="0"><p class="help">開店時現金盒原本零用金。</p></div>
+      <div><label>閉店現金</label><input type="number" id="closeCash" value="0"><p class="help">下班時現金盒實際點到金額。</p></div>
+      <div><label>現金收入</label><input id="cashIncome" readonly></div>
+      <div><label>現金支出</label><input id="cashExpense" readonly></div>
+      <div><label>應有現金</label><input id="expectedCash" readonly><p class="help">開店現金＋現金收入－現金支出。</p></div>
+      <div><label>現金差異</label><input id="cashDiff" readonly><p class="help">閉店現金－應有現金，正常應為 0。</p></div>
+      <div><label>刷卡收入</label><input id="cardIncome" readonly></div>
+      <div><label>匯款收入</label><input id="transferIncome" readonly></div>
+      <div><label>其他收入</label><input id="otherIncome" readonly></div>
+      <div><label>總營業額</label><input id="totalRevenue" readonly></div>
+      <div><label>支出總額</label><input id="expenseTotal" readonly></div>
+      <div><label>營業額扣支出</label><input id="revenueAfterExpense" readonly></div>
+    </div>
+
+    <div class="card" style="box-shadow:none;margin:14px 0 0;background:#F5F0E8;border-color:#B8A882">
+      <h2 style="font-size:16px;margin-bottom:8px">結帳前必填來客數</h2>
+      <p class="help">按「當日結帳」前，請先輸入以下四個數字。可以填 0，但不能空白。</p>
+      <div class="formgrid">
+        <div><label>訪客數 <span style="color:#B45309">*</span></label><input type="number" id="visitorCountToday" value="" min="0" placeholder="請輸入訪客數"></div>
+        <div><label>新客數 <span style="color:#B45309">*</span></label><input type="number" id="newGuestCountToday" value="" min="0" placeholder="請輸入新客數"></div>
+        <div><label>會員來客數 <span style="color:#B45309">*</span></label><input type="number" id="memberGuestCountToday" value="" min="0" placeholder="請輸入會員來客數"></div>
+        <div><label>票券使用 <span style="color:#B45309">*</span></label><input type="number" id="ticketUsedToday" value="" min="0" placeholder="請輸入票券使用數"></div>
       </div>
     </div>
 
-    <div class="decision" id="decision">金幣最多：鑽石直接換金幣</div>
+    <div class="card" style="box-shadow:none;margin:14px 0 0;background:#F5F0E8">
+      <h2 style="font-size:16px;margin-bottom:8px">結帳確認人員</h2>
+      <p class="help">準備當日結帳前，請由實際確認結帳的人員輸入姓名。未填寫不能結帳。</p>
+      <div class="formgrid two">
+        <div><label>確認人員</label><input id="checkoutConfirmPerson" placeholder="例：Yu / 店長姓名"></div>
+        <div><label>結帳備註</label><input id="checkoutNote" placeholder="例：現金差異為 0，資料已確認"></div>
+      </div>
+    </div>
+
+    <div class="actions no-print" style="margin-top:14px">
+      <button id="checkoutBtn" class="primary" onclick="confirmSubmit()">當日結帳</button>
+    </div>
+    <div id="checkoutLockedBanner" class="locked-banner hidden">今日已結帳，資料已鎖定。如需更正，請至 Google Sheet 或重新整理後重新送出更新資料。</div>
+  </div>
+
+</section>
+
+<section id="page-month" class="hidden">
+  <div class="card">
+    <h2>每月總和顯示</h2>
+    <p class="help">此頁可依「單日」或「日期區間」自動彙整已「當日結帳」送出的紀錄；切換日期區間或銷售人員時會自動更新。正式跨裝置 / 多人完整報表仍以 Google Sheet 為主。</p>
+    <div class="formgrid">
+      <div><label>查詢起日</label><input type="date" id="rangeStartDate" onchange="renderMonth()" oninput="renderMonth()"></div>
+      <div><label>查詢迄日</label><input type="date" id="rangeEndDate" onchange="renderMonth()" oninput="renderMonth()"></div>
+      <div><label>銷售人員篩選</label><select id="monthSalesFilter" onchange="renderMonth()"><option value="">全部銷售人員</option></select><p class="help">篩選會套用到區間營業額、銷售人員清單、收入明細與課程 / 票券統計。</p></div>
+      <div>
+        <label>貼心快速查詢</label>
+        <div class="actions no-print">
+          <button class="secondary" onclick="setRangeThisMonth()">當月</button>
+          <button class="secondary" onclick="setRangeLastMonth()">上個月</button>
+          <button class="secondary" onclick="setRangeThisWeek()">本週</button>
+        </div>
+        <p class="help" id="monthAutoUpdateStatus">系統會自動更新區間總和，不需要按更新按鈕。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="kpi green"><div class="name">區間總營業額</div><div class="value" id="monthRevenue">$0</div></div>
+    <div class="kpi orange"><div class="name">區間支出</div><div class="value" id="monthExpense">$0</div></div>
+    <div class="kpi"><div class="name">區間淨額參考</div><div class="value" id="monthNet">$0</div></div>
+    <div class="kpi"><div class="name">日報筆數</div><div class="value" id="monthReports">0</div></div>
   </div>
 
   <div class="card">
-    <label>同等值鑽石，三種方式可拿到的金幣</label>
-    <div class="grid3">
-      <div class="result" id="directBox">
-        <div class="small">方案 A：鑽石直接換金幣｜不累積等級</div>
-        <div class="big" id="directCoins">16,000</div>
-        <div class="small" id="directFormula">50000 × 0.32</div>
-      </div>
-      <div class="result" id="officialBox">
-        <div class="small">方案 B：等值台幣去官方儲值｜可累積等級</div>
-        <div class="big" id="officialCoins">10,690</div>
-        <div class="small" id="officialFormula">等值台幣 × 37</div>
-      </div>
-      <div class="result" id="sellerBox">
-        <div class="small">方案 C：等值台幣去幣商儲值｜可累積等級</div>
-        <div class="big" id="sellerCoins">13,869</div>
-        <div class="small" id="sellerFormula">等值台幣 × 48 / 50</div>
-      </div>
+    <h2>區間銷售人員累積清單</h2>
+    <p class="help">依銷售人員彙整本月已送出的收入明細。</p>
+    <div class="table-wrap">
+      <table id="monthSalesTable">
+        <thead>
+          <tr>
+            <th>銷售人員</th>
+            <th>銷售品項 / 內容</th>
+            <th>收款方式</th>
+            <th>金額</th>
+            <th>券號 / 卡號</th>
+            <th>贈品</th>
+            <th>備註</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
-
-    <table class="table">
-      <thead>
-        <tr><th>比較項目</th><th>差距</th><th>意思</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>鑽石直接換 vs 官方儲值</td><td id="gapDirectOfficial">多 5,310</td><td id="gapDirectOfficialText">鑽石直接換比較多</td></tr>
-        <tr><td>鑽石直接換 vs 幣商儲值</td><td id="gapDirectSeller">多 2,131</td><td id="gapDirectSellerText">鑽石直接換比較多</td></tr>
-        <tr><td>幣商儲值 vs 官方儲值</td><td id="gapSellerOfficial">多 3,179</td><td id="gapSellerOfficialText">幣商儲值比較多</td></tr>
-      </tbody>
-    </table>
   </div>
 
+  <div class="card">
+    <h2>區間收入明細累積</h2>
+    <div class="table-wrap">
+      <table id="monthIncomeTable">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>#</th>
+            <th>發票品項</th>
+            <th>收款方式</th>
+            <th>收入金額</th>
+            <th>售出券編號</th>
+            <th>新會員卡編號</th>
+            <th>產品內容</th>
+            <th>贈品</th>
+            <th>銷售員</th>
+            <th>備註</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>區間支出明細累積</h2>
+    <div class="table-wrap">
+      <table id="monthExpenseDetailTable">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>#</th>
+            <th>支出品項</th>
+            <th>金額</th>
+            <th>付款方式</th>
+            <th>支出 Key in 人員</th>
+            <th>備註</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>區間課程 / 票券統計</h2>
+    <p class="help">依區間已送出收入明細自動分類加總。</p>
+    <div class="formgrid two">
+      <div><label>包月</label><input id="monthPkgMonth" readonly></div>
+      <div><label>包季</label><input id="monthPkgSeason" readonly></div>
+      <div><label>包年</label><input id="monthPkgYear" readonly></div>
+      <div><label>售券</label><input id="monthTicketSold" readonly></div>
+      <div><label>教練課</label><input id="monthPtClass" readonly></div>
+      <div><label>產品</label><input id="monthProductQty" readonly></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>區間每日紀錄</h2>
+    <div class="table-wrap">
+      <table id="monthTable">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>營業額</th>
+            <th>支出</th>
+            <th>淨額參考</th>
+            <th>現金差異</th>
+            <th>銷售筆數</th>
+            <th>填表人</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="page-setting" class="hidden">
+  <div class="card">
+    <h2>設定｜發票品項</h2>
+    <p class="note">這裡設定「收入明細」的發票品項下拉選單。新增、修改或刪除後會自動儲存並立即套用到 Key in 頁。</p>
+    <div id="invoiceItemList" class="settings-list"></div>
+    <div class="actions no-print" style="margin-top:12px">
+      <button class="primary" onclick="addInvoiceItemSetting()">＋新增品項</button>
+    </div>
+    <p id="invoiceSettingStatus" class="help">修改後會自動儲存並套用，不需要另外按儲存。</p>
+    <p class="help">提醒：已確認的收入資料不會被更改；新的發票品項會套用在尚未確認與新新增的收入列。</p>
+  </div>
+
+  <div class="card">
+    <h2>設定｜銷售員 / 課程人員 / 支出 Key in 人員</h2>
+    <p class="note">這兩類人員使用同一份名單。新增、修改或刪除後會自動儲存並立即套用到「收入明細」與「支出明細」。</p>
+    <div id="staffItemList" class="settings-list"></div>
+    <div class="actions no-print" style="margin-top:12px">
+      <button class="primary" onclick="addStaffItemSetting()">＋新增人員</button>
+    </div>
+    <p id="staffSettingStatus" class="help">修改後會自動儲存並套用，不需要另外按儲存。</p>
+    <p class="help">提醒：已確認的收入 / 支出資料不會被更改；新人員名單只會套用在尚未確認與新新增的資料列。</p>
+  </div>
+</section>
+
+<section id="page-manual" class="hidden">
+  <div class="manual-hero">
+    <h2>Power Life｜每日營業日報使用說明</h2>
+    <p>現場同仁依照「Key in → 確認 → 當天累積 → 結帳 → Google Sheet」流程操作。每一區塊都用深色框整理，方便手機與平板閱讀。</p>
+  </div>
+
+  <div class="manual-grid">
+    <div class="manual-dark-box">
+      <h3><span class="manual-pill">1</span>整體流程</h3>
+      <ol>
+        <li>先在「Key in 資料」輸入收入或支出。</li>
+        <li>每一筆資料輸入完成後，按該列右側「確認」。</li>
+        <li>已確認資料會進入「當天累積 / 結帳」。</li>
+        <li>下班前檢查收入、支出、銷售人員與現金對帳。</li>
+        <li>確認無誤後按「當日結帳」送到 Google Sheet。</li>
+      </ol>
+    </div>
+
+    <div class="manual-dark-box">
+      <h3><span class="manual-pill">2</span>Key in 資料</h3>
+      <ul>
+        <li>收入明細：每收一筆款項，就新增一筆收入。</li>
+        <li>支出明細：每支出一筆，就新增一筆支出。</li>
+        <li>收入需選擇「銷售員 / 課程人員」。</li>
+        <li>支出需選擇「支出 Key in 人員」。</li>
+        <li>未按確認的資料不會進入結帳。</li>
+      </ul>
+    </div>
+
+    <div class="manual-dark-box">
+      <h3><span class="manual-pill">3</span>當天累積 / 結帳</h3>
+      <ul>
+        <li>這一頁會顯示已確認的收入與支出。</li>
+        <li>結帳前必填：訪客數、新客數、會員來客數、票券使用。</li>
+        <li>可以填 0，但不能空白。</li>
+        <li>開店現金與閉店現金用於現金對帳。</li>
+        <li>現金差異正常應為 0。</li>
+      </ul>
+    </div>
+
+    <div class="manual-dark-box">
+      <h3><span class="manual-pill">4</span>結帳確認</h3>
+      <ul>
+        <li>結帳前需填寫「結帳確認人員」。</li>
+        <li>按「當日結帳」後，會跳出最後確認視窗。</li>
+        <li>按「已確認無誤結帳」才會正式送到 Google Sheet。</li>
+        <li>結帳完成後，今日資料會鎖定。</li>
+      </ul>
+    </div>
+
+    <div class="manual-dark-box">
+      <h3><span class="manual-pill">5</span>區間總和查詢</h3>
+      <ul>
+        <li>可以查詢單日或日期區間。</li>
+        <li>起日與迄日選同一天，就是單日查詢。</li>
+        <li>可用快速按鈕：當月、上個月、本週。</li>
+        <li>可依銷售人員篩選營業額與收入明細。</li>
+      </ul>
+    </div>
+
+    <div class="manual-dark-box">
+      <h3><span class="manual-pill">6</span>設定頁</h3>
+      <ul>
+        <li>發票品項：控制收入明細的品項下拉選單。</li>
+        <li>人員設定：銷售員 / 課程人員與支出 Key in 人員共用同一份名單。</li>
+        <li>目前預設人員：YU、德明、Limit、Mia、宏。</li>
+        <li>修改設定後會自動套用到新資料列。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>欄位速查表</h2>
+    <div class="table-wrap">
+      <table class="manual-table">
+        <thead>
+          <tr>
+            <th>區塊</th>
+            <th>必填欄位</th>
+            <th>說明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>收入明細</td>
+            <td>發票品項、收款方式、收入金額</td>
+            <td>銷售員 / 課程人員建議務必選擇，方便統計個人業績。</td>
+          </tr>
+          <tr>
+            <td>支出明細</td>
+            <td>支出品項、金額、付款方式、支出 Key in 人員</td>
+            <td>支出 Key in 人員用於追蹤誰登錄該筆支出。</td>
+          </tr>
+          <tr>
+            <td>結帳前來客數</td>
+            <td>訪客數、新客數、會員來客數、票券使用</td>
+            <td>可以填 0，但不可空白。</td>
+          </tr>
+          <tr>
+            <td>結帳確認</td>
+            <td>結帳確認人員</td>
+            <td>代表實際完成當日結帳確認的人。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="manual-dark-box">
+    <h3><span class="manual-pill">提醒</span>目前資料保存邏輯</h3>
+    <p>收入 / 支出按「確認」後會先進入當天累積；正式寫入 Google Sheet 的時間點，是完成「當日結帳」並按下「已確認無誤結帳」。操作中請避免中途重新整理或關閉網頁。</p>
+  </div>
+</section>
+
+</main>
 
 
+<div id="checkoutModal" class="modal-mask hidden no-print">
+  <div class="modal-box">
+    <h2>當日結帳前確認</h2>
+    <p class="help">請確認今日收入、支出、來客數、現金對帳與結帳確認人員都已檢查完成。</p>
+    <div class="modal-summary" id="checkoutModalSummary"></div>
+    <div class="modal-actions">
+      <button class="secondary" onclick="closeCheckoutModal()">我要再檢查一次</button>
+      <button class="primary" onclick="processCheckout()">已確認無誤結帳</button>
+    </div>
+  </div>
 </div>
 
 <script>
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxjRaYWHPA6DrOu_HGr6wH2yCFVkQxX55Z54twnb8Vmv11hWng8IEW8_5D_23aafQPF/exec";
 const $ = id => document.getElementById(id);
-const fmt = n => Number(n).toLocaleString('en-US', {maximumFractionDigits:0});
-const fmt2 = n => Number(n).toLocaleString('en-US', {maximumFractionDigits:2});
+let submissionHistory = [];
+let isCheckedOut = false;
+let invoiceAutoSaveTimer = null;
+let staffAutoSaveTimer = null;
+const defaultStaffItems = ['YU','德明','Limit','Mia','宏'];
+let staffItems = [...defaultStaffItems];
+const defaultInvoiceItems = ['包月','包季','包年','票券訂金','售券','補差','產品','教練課','影印','其他'];
+let invoiceItems = [...defaultInvoiceItems];
+const money = n => '$' + (Number(n)||0).toLocaleString('zh-TW');
+const num = n => (Number(n)||0).toLocaleString('zh-TW');
+function todayStr(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function thisMonthStr(){return todayStr().slice(0,7)}
+function dateToStr(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function firstDayOfMonth(d=new Date()){return dateToStr(new Date(d.getFullYear(),d.getMonth(),1))}
+function lastDayOfMonth(d=new Date()){return dateToStr(new Date(d.getFullYear(),d.getMonth()+1,0))}
+function setDateRange(start,end){$('rangeStartDate').value=start;$('rangeEndDate').value=end;renderMonth()}
+function setRangeThisMonth(){const d=new Date();setDateRange(firstDayOfMonth(d),lastDayOfMonth(d))}
+function setRangeLastMonth(){const d=new Date();const last=new Date(d.getFullYear(),d.getMonth()-1,1);setDateRange(firstDayOfMonth(last),lastDayOfMonth(last))}
+function setRangeThisWeek(){const d=new Date();const day=d.getDay();const diff=(day===0?-6:1-day);const monday=new Date(d);monday.setDate(d.getDate()+diff);const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);setDateRange(dateToStr(monday),dateToStr(sunday))}
+function dateInRange(date,start,end){return date && (!start || date>=start) && (!end || date<=end)}
+function showPage(name,btn){['keyin','today','month','setting','manual'].forEach(p=>$('page-'+p).classList.add('hidden'));$('page-'+name).classList.remove('hidden');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); if(btn)btn.classList.add('active'); calculate(); if(name==='month') renderMonth(); if(name==='setting'){ renderInvoiceItemSettings(); renderStaffItemSettings(); }}
+function updateWeekday(){const d=new Date(($('date').value||todayStr())+'T00:00:00');const days=['日','一','二','三','四','五','六'];$('weekday').value='星期'+days[d.getDay()];}
+function escapeHtmlText(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escapeAttr(v){return String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function invoiceOptions(selected=''){let arr=[...invoiceItems]; if(selected && !arr.includes(selected)) arr.unshift(selected); return arr.map(x=>`<option value="${escapeAttr(x)}" ${x===selected?'selected':''}>${escapeHtmlText(x)}</option>`).join('')}
+function staffOptions(selected=''){
+ let arr=[...staffItems];
+ if(selected && !arr.includes(selected)) arr.unshift(selected);
+ return '<option value="">請選擇</option>' + arr.map(x=>`<option value="${escapeAttr(x)}" ${x===selected?'selected':''}>${escapeHtmlText(x)}</option>`).join('');
+}
 
-function setGap(idNum, idText, aName, bName, a, b){
-  const diff = a - b;
-  if(diff >= 0){
-    $(idNum).textContent = `${aName}多 ${fmt(diff)} 金幣`;
-    $(idText).textContent = `${aName}比較多`;
-  }else{
-    $(idNum).textContent = `${bName}多 ${fmt(Math.abs(diff))} 金幣`;
-    $(idText).textContent = `${bName}比較多`;
+function renderInvoiceItemSettings(){
+ const box=$('invoiceItemList');
+ if(!box) return;
+ box.innerHTML='';
+ invoiceItems.forEach((item,i)=>{
+   box.innerHTML += `<div class="settings-list-row">
+     <input class="invoice-setting-input" value="${escapeAttr(item)}" placeholder="輸入發票品項，例如：包月" oninput="autoSaveInvoiceItemSettings()">
+     <button class="small danger" onclick="removeInvoiceItemSetting(${i})">刪除</button>
+   </div>`;
+ });
+ if(invoiceItems.length===0){
+   box.innerHTML='<div class="help" style="padding:12px;border:1px dashed #D8CCB2;border-radius:12px">目前沒有品項，請新增至少一個發票品項。</div>';
+ }
+}
+function getInvoiceItemsFromSettings(){
+ return [...document.querySelectorAll('.invoice-setting-input')].map(i=>i.value.trim()).filter(Boolean);
+}
+function updateInvoiceSettingStatus(text){
+ const el=$('invoiceSettingStatus');
+ if(el) el.textContent=text;
+}
+function autoSaveInvoiceItemSettings(){
+ clearTimeout(invoiceAutoSaveTimer);
+ updateInvoiceSettingStatus('正在自動儲存...');
+ invoiceAutoSaveTimer=setTimeout(()=>{
+   const items=[...new Set(getInvoiceItemsFromSettings())];
+   if(items.length===0){
+     updateInvoiceSettingStatus('至少需要保留一個發票品項。');
+     return;
+   }
+   invoiceItems=items;
+   refreshInvoiceSelects();
+   updateInvoiceSettingStatus('已自動儲存並套用：'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+ },350);
+}
+function addInvoiceItemSetting(){
+ const items=getInvoiceItemsFromSettings();
+ items.push('');
+ invoiceItems=items;
+ renderInvoiceItemSettings();
+ setTimeout(()=>{const inputs=document.querySelectorAll('.invoice-setting-input'); if(inputs.length) inputs[inputs.length-1].focus();},0);
+ updateInvoiceSettingStatus('請輸入新品項，輸入後會自動儲存。');
+}
+function removeInvoiceItemSetting(index){
+ const items=getInvoiceItemsFromSettings();
+ items.splice(index,1);
+ if(items.length===0){
+   alert('至少需要保留一個發票品項。');
+   return;
+ }
+ invoiceItems=[...new Set(items)];
+ renderInvoiceItemSettings();
+ refreshInvoiceSelects();
+ updateInvoiceSettingStatus('已自動儲存並套用：'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+}
+function saveInvoiceItemSettings(){
+ autoSaveInvoiceItemSettings();
+}
+function resetInvoiceItems(){
+ invoiceItems=[...defaultInvoiceItems];
+ renderInvoiceItemSettings();
+ refreshInvoiceSelects();
+ updateInvoiceSettingStatus('已恢復預設並自動套用。');
+}
+function refreshInvoiceSelects(){
+ document.querySelectorAll('select.item').forEach(sel=>{
+   if(sel.closest('tr')?.dataset.confirmed==='true') return;
+   const current=sel.value;
+   sel.innerHTML=invoiceOptions(current);
+   sel.value=[...sel.options].some(o=>o.value===current)?current:(invoiceItems[0]||'');
+ });
+ calculate();
+}
+
+function renderStaffItemSettings(){
+ const box=$('staffItemList');
+ if(!box) return;
+ box.innerHTML='';
+ staffItems.forEach((item,i)=>{
+   box.innerHTML += `<div class="settings-list-row">
+     <input class="staff-setting-input" value="${escapeAttr(item)}" placeholder="輸入人員名稱，例如：YU" oninput="autoSaveStaffItemSettings()">
+     <button class="small danger" onclick="removeStaffItemSetting(${i})">刪除</button>
+   </div>`;
+ });
+ if(staffItems.length===0){
+   box.innerHTML='<div class="help" style="padding:12px;border:1px dashed #D8CCB2;border-radius:12px">目前沒有人員，請新增至少一位人員。</div>';
+ }
+}
+function getStaffItemsFromSettings(){
+ return [...document.querySelectorAll('.staff-setting-input')].map(i=>i.value.trim()).filter(Boolean);
+}
+function updateStaffSettingStatus(text){
+ const el=$('staffSettingStatus');
+ if(el) el.textContent=text;
+}
+function autoSaveStaffItemSettings(){
+ clearTimeout(staffAutoSaveTimer);
+ updateStaffSettingStatus('正在自動儲存...');
+ staffAutoSaveTimer=setTimeout(()=>{
+   const items=[...new Set(getStaffItemsFromSettings())];
+   if(items.length===0){
+     updateStaffSettingStatus('至少需要保留一位人員。');
+     return;
+   }
+   staffItems=items;
+   refreshStaffSelects();
+   updateStaffSettingStatus('已自動儲存並套用：'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+ },350);
+}
+function addStaffItemSetting(){
+ const items=getStaffItemsFromSettings();
+ items.push('');
+ staffItems=items;
+ renderStaffItemSettings();
+ setTimeout(()=>{const inputs=document.querySelectorAll('.staff-setting-input'); if(inputs.length) inputs[inputs.length-1].focus();},0);
+ updateStaffSettingStatus('請輸入新人員，輸入後會自動儲存。');
+}
+function removeStaffItemSetting(index){
+ const items=getStaffItemsFromSettings();
+ items.splice(index,1);
+ if(items.length===0){
+   alert('至少需要保留一位人員。');
+   return;
+ }
+ staffItems=[...new Set(items)];
+ renderStaffItemSettings();
+ refreshStaffSelects();
+ updateStaffSettingStatus('已自動儲存並套用：'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}));
+}
+function refreshStaffSelects(){
+ document.querySelectorAll('select.sales, select.exKeyin').forEach(sel=>{
+   if(sel.closest('tr')?.dataset.confirmed==='true') return;
+   const current=sel.value;
+   sel.innerHTML=staffOptions(current);
+   sel.value=[...sel.options].some(o=>o.value===current)?current:'';
+ });
+ calculate();
+}
+
+async function loadInvoiceItemsFromSheet(){
+ try{
+   const res=await fetch(SHEET_URL+'?action=invoiceItems');
+   const json=await res.json();
+   if(json.ok && Array.isArray(json.items) && json.items.length){
+     invoiceItems=json.items;
+     renderInvoiceItemSettings();
+     refreshInvoiceSelects();
+     updateInvoiceSettingStatus('已從 Google Sheet 讀取發票品項並套用。');
+   }else{
+     renderInvoiceItemSettings();
+     updateInvoiceSettingStatus('目前使用預設發票品項。');
+   }
+ }catch(e){
+   renderInvoiceItemSettings();
+   updateInvoiceSettingStatus('無法讀取 Google Sheet 品項，目前使用預設品項。');
+ }
+}
+
+function incomeRow(data={}){
+ const tr=document.createElement('tr');
+ tr.dataset.confirmed = data.confirmed ? 'true' : 'false';
+ tr.innerHTML=`<td class="idx"></td><td><select class="item">${invoiceOptions(data.item||'')}</select></td><td><select class="pay">${['現金','刷卡','匯款','其他'].map(x=>`<option ${data.pay===x?'selected':''}>${x}</option>`).join('')}</select></td><td><input type="number" class="amount" value="${data.amount||''}" min="0"></td><td><input class="voucher" value="${data.voucher||''}"></td><td><input class="memberCard" value="${data.memberCard||''}"></td><td><input class="product" value="${data.product||''}"></td><td><input class="gift" value="${data.gift||''}"></td><td><select class="sales">${staffOptions(data.sales||'')}</select></td><td><input class="note" value="${data.note||''}"></td><td><span class="confirm-pill">待確認</span></td><td class="no-print"><button class="small primary" onclick="confirmKeyRow(this,'income')">確認</button></td>`;
+ tr.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>{calculate();dirty()}));
+ if(data.confirmed) setRowConfirmed(tr);
+ return tr
+}
+function expenseRow(data={}){
+ const tr=document.createElement('tr');
+ tr.dataset.confirmed = data.confirmed ? 'true' : 'false';
+ tr.innerHTML=`<td class="idx"></td><td><input class="exItem" value="${data.item||''}" placeholder="例：影印"></td><td><input type="number" class="exAmount" value="${data.amount||''}" min="0"></td><td><select class="exPay">${['現金','刷卡','匯款','其他'].map(x=>`<option ${data.pay===x?'selected':''}>${x}</option>`).join('')}</select></td><td><select class="exKeyin">${staffOptions(data.keyinPerson||data.keyinBy||'')}</select></td><td><input class="exNote" value="${data.note||''}"></td><td><span class="confirm-pill">待確認</span></td><td class="no-print"><button class="small primary" onclick="confirmKeyRow(this,'expense')">確認</button></td>`;
+ tr.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>{calculate();dirty()}));
+ if(data.confirmed) setRowConfirmed(tr);
+ return tr
+}
+function setRowConfirmed(tr){
+ tr.dataset.confirmed='true';
+ tr.querySelectorAll('input,select').forEach(el=>el.disabled=true);
+ const pill=tr.querySelector('.confirm-pill'); if(pill){pill.textContent='已確認'; pill.classList.add('done');}
+ const btn=tr.querySelector('button'); if(btn){btn.textContent='已確認'; btn.disabled=true; btn.classList.remove('primary'); btn.classList.add('secondary');}
+}
+function confirmKeyRow(btn,type){
+ const tr=btn.closest('tr');
+ if(type==='income'){
+  const item=tr.querySelector('.item').value;
+  const amount=Number(tr.querySelector('.amount').value)||0;
+  const sales=tr.querySelector('.sales').value.trim();
+  if(!item || amount<=0){ alert('請先填寫發票品項與收入金額。'); return; }
+  if(!sales){ alert('請填寫銷售員 / 課程人員。'); return; }
+ }else{
+  const item=tr.querySelector('.exItem').value.trim();
+  const amount=Number(tr.querySelector('.exAmount').value)||0;
+  const keyin=tr.querySelector('.exKeyin').value.trim();
+  if(!item || amount<=0){ alert('請先填寫支出品項與金額。'); return; }
+  if(!keyin){ alert('請填寫支出 Key in 人員。'); return; }
+ }
+ setRowConfirmed(tr);
+ calculate();
+}
+function confirmedRows(tableId){return [...$(tableId).querySelectorAll('tbody tr')].filter(tr=>tr.dataset.confirmed==='true')}
+function removeConfirmedIncome(idx){ const rows=confirmedRows('incomeTable'); if(rows[idx] && confirm('確定刪除此筆收入資料？')){rows[idx].remove(); calculate();}}
+function removeConfirmedExpense(idx){ const rows=confirmedRows('expenseTable'); if(rows[idx] && confirm('確定刪除此筆支出資料？')){rows[idx].remove(); calculate();}}
+
+function addIncomeRow(data){$('incomeTable').querySelector('tbody').appendChild(incomeRow(data)); calculate()}
+function addExpenseRow(data){$('expenseTable').querySelector('tbody').appendChild(expenseRow(data)); calculate()}
+function getIncomeRows(){
+ return confirmedRows('incomeTable').map(tr=>({item:tr.querySelector('.item').value,pay:tr.querySelector('.pay').value,amount:Number(tr.querySelector('.amount').value)||0,voucher:tr.querySelector('.voucher').value,memberCard:tr.querySelector('.memberCard').value,product:tr.querySelector('.product').value,gift:tr.querySelector('.gift').value,sales:tr.querySelector('.sales').value,note:tr.querySelector('.note').value,confirmed:true})).filter(r=>r.item||r.amount||r.sales||r.note)
+}
+function getExpenseRows(){
+ return confirmedRows('expenseTable').map(tr=>({item:tr.querySelector('.exItem').value,amount:Number(tr.querySelector('.exAmount').value)||0,pay:tr.querySelector('.exPay').value,keyinPerson:tr.querySelector('.exKeyin').value,note:tr.querySelector('.exNote').value,confirmed:true})).filter(r=>r.item||r.amount||r.note||r.keyinPerson)
+}
+function classifyStats(){const s={pkgMonth:0,pkgSeason:0,pkgYear:0,ticketSold:0,ptClass:0,productQty:0}; getIncomeRows().forEach(r=>{const t=`${r.item} ${r.product} ${r.note}`.toLowerCase(); if(/包月|月費|月繳|月卡/.test(t))s.pkgMonth++; if(/包季|季繳|季卡|三個月|3個月|3 個月/.test(t))s.pkgSeason++; if(/包年|年繳|年卡|一年|12個月|12 個月/.test(t))s.pkgYear++; if(/票券|售券|券|100張|100 張/.test(t))s.ticketSold++; if(/教練課|私教|pt|教練|課程/.test(t))s.ptClass++; if(/產品|商品|補給|蛋白|毛巾|手套|護具|水|飲料/.test(t))s.productQty++;}); return s}
+function salesGroups(){const g={}; getIncomeRows().forEach(r=>{const p=(r.sales||'未填銷售人員').trim(); if(!g[p])g[p]=[]; g[p].push(r)}); return g}
+function calculate(){
+ updateWeekday();
+ const inc=getIncomeRows(), exp=getExpenseRows();
+ const total=inc.reduce((s,r)=>s+r.amount,0), expense=exp.reduce((s,r)=>s+r.amount,0);
+ const cash=inc.filter(r=>r.pay==='現金').reduce((s,r)=>s+r.amount,0), card=inc.filter(r=>r.pay==='刷卡').reduce((s,r)=>s+r.amount,0), transfer=inc.filter(r=>r.pay==='匯款').reduce((s,r)=>s+r.amount,0), other=inc.filter(r=>!['現金','刷卡','匯款'].includes(r.pay)).reduce((s,r)=>s+r.amount,0);
+ const cashExp=exp.filter(r=>r.pay==='現金').reduce((s,r)=>s+r.amount,0);
+ const open=Number($('openCash').value)||0, close=Number($('closeCash').value)||0, expected=open+cash-cashExp, diff=close-expected;
+ const visitor=Number(($('visitorCountToday')||$('visitorCount')).value)||0, newg=Number(($('newGuestCountToday')||$('newGuestCount')).value)||0, member=Number(($('memberGuestCountToday')||$('memberGuestCount')).value)||0, ticketUsed=Number(($('ticketUsedToday')||$('ticketUsed')).value)||0, guests=visitor+newg+member+ticketUsed;
+ $('visitorCount').value=visitor;
+ $('newGuestCount').value=newg;
+ $('memberGuestCount').value=member;
+ $('ticketUsed').value=ticketUsed;
+ $('totalGuestCount').value=guests;
+ if($('morningStaffToday')) $('morningStaff').value=$('morningStaffToday').value;
+ if($('nightStaffToday')) $('nightStaff').value=$('nightStaffToday').value;
+ if($('dailyNoteToday')) $('dailyNote').value=$('dailyNoteToday').value;
+ $('cashIncome').value=money(cash); $('cardIncome').value=money(card); $('transferIncome').value=money(transfer); $('otherIncome').value=money(other); $('cashExpense').value=money(cashExp); $('expectedCash').value=money(expected); $('cashDiff').value=money(diff); $('cashDiff').classList.toggle('cash-alert', diff!==0); $('cashDiff').classList.toggle('cash-ok', diff===0);
+ $('totalRevenue').value=money(total); $('expenseTotal').value=money(expense); $('revenueAfterExpense').value=money(total-expense);
+ const stats=classifyStats(); ['pkgMonth','pkgSeason','pkgYear','ticketSold','ptClass','productQty'].forEach(k=>$(k).value=stats[k]);
+ $('kpiTotal').textContent=money(total); $('kpiCash').textContent=money(cash); $('kpiCard').textContent=money(card); $('kpiTransfer').textContent=money(transfer); $('kpiOther').textContent=money(other); $('kpiExpense').textContent=money(expense);
+ $('kpiGuests').textContent=num(guests); $('kpiMember').textContent=num(member); $('kpiTicketUsed').textContent=num(ticketUsed); $('kpiNew').textContent=num(newg); $('kpiVisitor').textContent=num(visitor);
+ renderExpenseMini(exp); renderSalesMini(); renderToday(); labelTables();
+}
+function renderExpenseMini(exp){const box=$('kpiExpenseList'); const rows=getExpenseRows(); box.innerHTML=rows.length?rows.slice(0,4).map(r=>`<div class="mini"><span>${r.item||'未填品項'}</span><strong>${money(r.amount)}</strong></div>`).join(''):'<div class="mini"><span>尚無支出</span><strong>$0</strong></div>'}
+function renderSalesMini(){const g=salesGroups(); const names=Object.keys(g); $('kpiSalesCount').textContent=num(getIncomeRows().length); $('kpiSalesList').innerHTML=names.length?names.map(n=>`<div class="mini"><span>${n}</span><strong>${g[n].length} 筆</strong></div>`).join(''):'<div class="mini"><span>尚無銷售</span><strong>0 筆</strong></div>'}
+function renderToday(){
+ const inc=getIncomeRows(), exp=getExpenseRows();
+ const total=inc.reduce((s,r)=>s+r.amount,0), eTotal=exp.reduce((s,r)=>s+r.amount,0);
+ $('todayTotal') && ($('todayTotal').textContent=money(total));
+ $('todayExpense') && ($('todayExpense').textContent=money(eTotal));
+ $('todayCashDiff') && ($('todayCashDiff').textContent=$('cashDiff').value);
+ $('todaySalesCount') && ($('todaySalesCount').textContent=num(inc.length));
+ const st=$('salesSummaryTable').querySelector('tbody'); st.innerHTML='';
+ Object.entries(salesGroups()).forEach(([name,rows])=>{
+  let subtotal=0;
+  rows.forEach((r,i)=>{subtotal+=r.amount; st.innerHTML+=`<tr><td>${i===0?'<strong>'+name+'</strong>':''}</td><td>${r.item}｜${r.product||''}</td><td>${r.pay}</td><td>${money(r.amount)}</td><td>${[r.voucher?'券：'+r.voucher:'',r.memberCard?'卡：'+r.memberCard:''].filter(Boolean).join(' / ')}</td><td>${r.gift||''}</td><td>${r.note||''}</td></tr>`});
+  st.innerHTML+=`<tr class="subtotal"><td colspan="3">${name} 小計</td><td>${money(subtotal)}</td><td colspan="3">共 ${rows.length} 筆</td></tr>`
+ });
+ const it=$('todayIncomeTable').querySelector('tbody'); it.innerHTML='';
+ inc.forEach((r,i)=>it.innerHTML+=`<tr><td>${i+1}</td><td>${r.item}</td><td>${r.pay}</td><td>${money(r.amount)}</td><td>${r.voucher}</td><td>${r.memberCard}</td><td>${r.product}</td><td>${r.gift}</td><td>${r.sales}</td><td>${r.note}</td><td class="no-print"><button class="small danger" onclick="removeConfirmedIncome(${i})">刪除</button></td></tr>`);
+ const et=$('todayExpenseTable').querySelector('tbody'); et.innerHTML='';
+ exp.forEach((r,i)=>et.innerHTML+=`<tr><td>${i+1}</td><td>${r.item}</td><td>${money(r.amount)}</td><td>${r.pay}</td><td>${r.keyinPerson||''}</td><td>${r.note}</td><td class="no-print"><button class="small danger" onclick="removeConfirmedExpense(${i})">刪除</button></td></tr>`);
+ labelTables();
+}
+function labelTables(){document.querySelectorAll('table').forEach(table=>{const h=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim()); table.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>td.setAttribute('data-label',h[i]||'')))}); document.querySelectorAll('.idx').forEach((td,i)=>td.textContent=i+1)}
+function collect(){
+ const inc=getIncomeRows(), exp=getExpenseRows();
+ const total=inc.reduce((s,r)=>s+r.amount,0), expense=exp.reduce((s,r)=>s+r.amount,0);
+ return {
+  basic:{
+   date:$('date').value,
+   weekday:$('weekday').value,
+   branch:$('branch').value,
+   reporter:($('reporter').value || ($('checkoutConfirmPerson') ? $('checkoutConfirmPerson').value : '')),
+   visitorCount:$('visitorCount').value,
+   newGuestCount:$('newGuestCount').value,
+   memberGuestCount:$('memberGuestCount').value,
+   totalGuestCount:$('totalGuestCount').value,
+   ticketUsed:$('ticketUsed').value,
+   morningStaff:$('morningStaff').value,
+   nightStaff:$('nightStaff').value,
+   dailyNote:$('dailyNote').value
+  },
+  income:inc,
+  expense:exp,
+  settlement:{
+   openCash:$('openCash').value,
+   closeCash:$('closeCash').value
+  },
+  check:{
+   handoverSign:$('checkoutConfirmPerson').value,
+   managerSign:'',
+   handoverNote:$('checkoutNote').value,
+   checkoutConfirmPerson:$('checkoutConfirmPerson').value,
+   checkoutNote:$('checkoutNote').value,
+   ck1:true,ck2:true,ck3:true,ck4:true,ck5:true,ck6:true
+  },
+  setting:{invoiceItems, staffItems},
+  summary:{total,expense,cashDiff:$('cashDiff') ? $('cashDiff').value : ''},
+  checkoutId:($('date').value||todayStr())+'_'+($('branch').value||'Power Life'),
+  checkoutStatus:'已結帳',
+  submittedAt:new Date().toISOString()
+ }
+}
+function dirty(){}
+
+function rowHasIncomeData(tr){
+  return !!(tr.querySelector('.item')?.value || Number(tr.querySelector('.amount')?.value)|| tr.querySelector('.sales')?.value || tr.querySelector('.note')?.value);
+}
+function rowHasExpenseData(tr){
+  return !!(tr.querySelector('.exItem')?.value || Number(tr.querySelector('.exAmount')?.value)|| tr.querySelector('.exNote')?.value);
+}
+function unconfirmedIncomeCount(){
+  return [...$('incomeTable').querySelectorAll('tbody tr')].filter(tr=>tr.dataset.confirmed!=='true' && rowHasIncomeData(tr)).length;
+}
+function unconfirmedExpenseCount(){
+  return [...$('expenseTable').querySelectorAll('tbody tr')].filter(tr=>tr.dataset.confirmed!=='true' && rowHasExpenseData(tr)).length;
+}
+function setCheckoutLocked(){
+  isCheckedOut = true;
+  document.querySelectorAll('#page-keyin input,#page-keyin select,#page-keyin textarea,#page-keyin button,#page-today input,#page-today select,#page-today textarea').forEach(el=>{
+    if(el.id !== 'monthPicker') el.disabled = true;
+  });
+  document.querySelectorAll('#page-today button').forEach(btn=>{
+    if(btn.id !== 'checkoutBtn') btn.disabled = true;
+  });
+  const btn = $('checkoutBtn');
+  if(btn){
+    btn.textContent = '今日已結帳';
+    btn.disabled = true;
+    btn.classList.remove('primary');
+    btn.classList.add('secondary');
   }
-}
-
-function calc(){
-  const diamond = Math.max(0, Number($('diamond').value || 0));
-  const usdRate = Math.max(0, Number($('usdRate').value || 0));
-  const fee = Math.max(0, Number($('fee').value || 0));
-  const threshold = Math.max(0, Number($('sellerThreshold').value || 0));
-
-  const usd = diamond / 250000;
-  const twd = usd * usdRate * (1 - fee/100);
-
-  const directCoins = diamond * 0.32;
-  const officialCoins = twd * 37;
-  const sellerRate = twd >= threshold ? 50 : 48;
-  const sellerCoins = twd * sellerRate;
-
-  const options = [
-    {key:'direct', name:'鑽石直接換金幣', coins:directCoins, box:'directBox'},
-    {key:'official', name:'官方儲值', coins:officialCoins, box:'officialBox'},
-    {key:'seller', name:'幣商儲值', coins:sellerCoins, box:'sellerBox'}
-  ].sort((a,b)=>b.coins-a.coins);
-
-  ['directBox','officialBox','sellerBox'].forEach(id => $(id).className='result');
-  $(options[0].box).className = 'result win';
-  $(options[1].box).className = 'result mid';
-  $(options[2].box).className = 'result lose';
-
-  $('decision').textContent = `金幣最多：${options[0].name}（比第二名多 ${fmt(options[0].coins - options[1].coins)} 金幣）`;
-
-  $('directCoins').textContent = fmt(directCoins) + ' 金幣';
-  $('directFormula').textContent = `${fmt(diamond)} × 0.32 = ${fmt(directCoins)}`;
-
-  $('officialCoins').textContent = fmt(officialCoins) + ' 金幣';
-  $('officialFormula').textContent = `NT$${fmt2(twd)} × 37 = ${fmt(officialCoins)}`;
-
-  $('sellerCoins').textContent = fmt(sellerCoins) + ' 金幣';
-  $('sellerFormula').textContent = `NT$${fmt2(twd)} × ${sellerRate} = ${fmt(sellerCoins)}`;
-
-  $('usd').textContent = '$' + fmt2(usd);
-  $('usdFormula').textContent = `${fmt(diamond)} ÷ 250000 = ${fmt2(usd)} USD`;
-  $('twd').textContent = 'NT$' + fmt2(twd);
-  $('twdFormula').textContent = `${fmt2(usd)} × ${fmt2(usdRate)} × ${fmt2(100-fee)}% = ${fmt2(twd)} TWD`;
-
-  setGap('gapDirectOfficial','gapDirectOfficialText','鑽石直接換','官方儲值',directCoins,officialCoins);
-  setGap('gapDirectSeller','gapDirectSellerText','鑽石直接換','幣商儲值',directCoins,sellerCoins);
-  setGap('gapSellerOfficial','gapSellerOfficialText','幣商儲值','官方儲值',sellerCoins,officialCoins);
+  const banner = $('checkoutLockedBanner');
+  if(banner) banner.classList.remove('hidden');
 }
 
 
-function calcCash(){
-  const cash = Math.max(0, Number($('cashTwd').value || 0));
-  const official = cash * 37;
-  const sellerRate = cash >= 10000 ? 50 : 48;
-  const seller = cash * sellerRate;
-  const gap = seller - official;
-
-  $('cashSellerRate').textContent = sellerRate + ' 倍';
-  $('cashSellerRateText').textContent = sellerRate === 50 ? '滿 10000 台幣，1 元 = 50 金幣' : '未滿 10000 台幣，1 元 = 48 金幣';
-
-  $('cashOfficialCoins').textContent = fmt(official) + ' 金幣';
-  $('cashOfficialFormula').textContent = `${fmt(cash)} × 37 = ${fmt(official)}`;
-
-  $('cashSellerCoins').textContent = fmt(seller) + ' 金幣';
-  $('cashSellerFormula').textContent = `${fmt(cash)} × ${sellerRate} = ${fmt(seller)}`;
-
-  $('cashGap').textContent = `多 ${fmt(gap)} 金幣`;
-  $('cashGapFormula').textContent = `${fmt(seller)} - ${fmt(official)} = ${fmt(gap)}`;
+function requiredTodayOpsMissing(){
+ const fields=[
+   ['visitorCountToday','訪客數'],
+   ['newGuestCountToday','新客數'],
+   ['memberGuestCountToday','會員來客數'],
+   ['ticketUsedToday','票券使用']
+ ];
+ const missing=[];
+ fields.forEach(([id,label])=>{
+   const el=$(id);
+   if(!el || el.value === '' || el.value === null || Number(el.value) < 0){
+     missing.push(label);
+   }
+ });
+ return missing;
 }
 
-async function fetchBotRate(){
-  const status = $('rateStatus');
-  status.textContent = '正在快速抓取 USD→TWD 匯率...';
-  const apis = [
-    'https://open.er-api.com/v6/latest/USD',
-    'https://api.frankfurter.app/latest?from=USD&to=TWD'
-  ];
+async function confirmSubmit(){
+ calculate();
 
-  for(const url of apis){
-    try{
-      const res = await fetch(url, {cache:'no-store'});
-      if(!res.ok) throw new Error('fetch failed');
-      const data = await res.json();
-      let rate = null;
+ if(isCheckedOut){
+   alert('今日已結帳，資料已鎖定。');
+   return;
+ }
 
-      if(data && data.rates && data.rates.TWD){
-        rate = Number(data.rates.TWD);
-      }
+ if(unconfirmedIncomeCount() > 0 || unconfirmedExpenseCount() > 0){
+   alert('還有尚未按「確認」的 Key in 資料。請先回到 Key in 資料頁確認，或清空不需要的資料後再結帳。');
+   showPage('keyin', document.querySelectorAll('.tab')[0]);
+   return;
+ }
 
-      if(rate && rate > 0){
-        $('usdRate').value = rate.toFixed(3);
-        const sourceName = url.includes('er-api') ? 'ExchangeRate-API' : 'Frankfurter';
-        status.textContent = `已抓取 ${sourceName} USD→TWD 匯率：${rate.toFixed(3)}。實際入帳匯率仍以平台或銀行為準。`;
-        calc();
-        return;
-      }
-    }catch(e){}
-  }
+ const missingOps = requiredTodayOpsMissing();
+ if(missingOps.length){
+   alert('結帳前請先填寫「當天累積 / 結帳」的營運資料：' + missingOps.join('、') + '。可填 0，但不能空白。');
+   showPage('today', document.querySelectorAll('.tab')[1]);
+   return;
+ }
 
-  status.textContent = '自動抓取失敗，已保留目前匯率。你仍可手動輸入平台實際入帳匯率。';
+ if(!$('checkoutConfirmPerson').value.trim()){
+   alert('請先到「當天累積 / 結帳」頁底下填寫「結帳確認人員」。');
+   showPage('today', document.querySelectorAll('.tab')[1]);
+   return;
+ }
+
+ const inc = getIncomeRows();
+ const exp = getExpenseRows();
+ if(inc.length === 0 && exp.length === 0){
+   const emptyOk = confirm('目前沒有任何已確認的收入或支出資料，仍要當日結帳嗎？');
+   if(!emptyOk) return;
+ }
+
+ showCheckoutModal();
 }
+function showCheckoutModal(){
+ const diffText=$('cashDiff') ? $('cashDiff').value : '$0';
+ const warning = diffText !== '$0' ? `<div style="color:#B45309;font-weight:900;margin-top:8px">提醒：現金差異不是 0，目前為 ${diffText}</div>` : `<div style="color:#2C3E2D;font-weight:900;margin-top:8px">現金差異為 0。</div>`;
+ $('checkoutModalSummary').innerHTML = `
+   <div>本日營業額：<strong>${$('totalRevenue')?.value||'$0'}</strong></div>
+   <div>支出總額：<strong>${$('expenseTotal')?.value||'$0'}</strong></div>
+   <div>銷售筆數：<strong>${getIncomeRows().length} 筆</strong></div>
+   <div>支出筆數：<strong>${getExpenseRows().length} 筆</strong></div>
+   <div>今日總來客數：<strong>${$('totalGuestCount')?.value||'0'}</strong></div>
+   <div>結帳確認人員：<strong>${$('checkoutConfirmPerson')?.value||''}</strong></div>
+   <div>結帳備註：<strong>${$('checkoutNote')?.value||'-'}</strong></div>
+   ${warning}
+   <div style="margin-top:8px;color:#7A806F">Google Sheet 端會以「同日期＋同館別」更新原資料，不會重複新增同一天日報。</div>
+ `;
+ $('checkoutModal').classList.remove('hidden');
+}
+function closeCheckoutModal(){
+ $('checkoutModal').classList.add('hidden');
+}
+async function processCheckout(){
+ closeCheckoutModal();
+ const data=collect();
+ try{
+   await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+   addHistory(data);
+   renderMonth();
+   setCheckoutLocked();
+   alert('已完成當日結帳。今日資料已鎖定，並已送到 Google Sheet。');
+ }catch(e){
+   alert('送出失敗：'+e.message);
+ }
+}
+function addHistory(d){ submissionHistory.push(d); }
+function renderMonth(){
+ const startDate=$('rangeStartDate')?.value || firstDayOfMonth();
+ const endDate=$('rangeEndDate')?.value || lastDayOfMonth();
+ if($('rangeStartDate')) $('rangeStartDate').value=startDate;
+ if($('rangeEndDate')) $('rangeEndDate').value=endDate;
 
-['diamond','usdRate','fee','sellerThreshold'].forEach(id => $(id).addEventListener('input', calc));
-$('cashTwd').addEventListener('input', calcCash);
-$('fetchBotRate').addEventListener('click', fetchBotRate);
-});
-calc();
-calcCash();
+ let realStart=startDate, realEnd=endDate;
+ if(realStart > realEnd){
+   const tmp=realStart;
+   realStart=realEnd;
+   realEnd=tmp;
+ }
+
+ const rows=submissionHistory.filter(d=>dateInRange(d.basic?.date||'', realStart, realEnd));
+
+ let allIncome=[], allExpense=[];
+
+ rows.forEach(d=>{
+   const date=d.basic?.date||'';
+   const income=d.income||[];
+   const expenseRows=d.expense||[];
+   income.forEach((row,i)=>allIncome.push({...row, date, rowNo:i+1}));
+   expenseRows.forEach((row,i)=>allExpense.push({...row, date, rowNo:i+1}));
+ });
+
+ // 更新銷售人員篩選清單
+ const filter=$('monthSalesFilter');
+ const currentFilter=filter ? filter.value : '';
+ const salesNames=[...new Set(allIncome.map(r=>(r.sales||'未填銷售人員').trim()).filter(Boolean))].sort();
+ if(filter){
+   filter.innerHTML='<option value="">全部銷售人員</option>' + salesNames.map(n=>`<option value="${n}">${n}</option>`).join('');
+   filter.value=salesNames.includes(currentFilter) ? currentFilter : '';
+ }
+
+ const selectedSales=filter ? filter.value : '';
+ const filteredIncome=selectedSales ? allIncome.filter(r=>(r.sales||'未填銷售人員').trim()===selectedSales) : allIncome;
+
+ const rev=filteredIncome.reduce((s,r)=>s+(Number(r.amount)||0),0);
+ const exp=allExpense.reduce((s,r)=>s+(Number(r.amount)||0),0);
+ const reportCount=rows.length;
+
+ $('monthRevenue').textContent=money(rev);
+ $('monthExpense').textContent=money(exp);
+ $('monthNet').textContent=money(rev-exp);
+ $('monthReports').textContent=num(reportCount);
+
+ // 區間收入明細累積：套用銷售人員篩選
+ const incomeTb=$('monthIncomeTable').querySelector('tbody');
+ incomeTb.innerHTML='';
+ filteredIncome.forEach(r=>{
+   incomeTb.innerHTML += `<tr>
+     <td>${r.date}</td>
+     <td>${r.rowNo}</td>
+     <td>${r.item||''}</td>
+     <td>${r.pay||''}</td>
+     <td>${money(r.amount)}</td>
+     <td>${r.voucher||''}</td>
+     <td>${r.memberCard||''}</td>
+     <td>${r.product||''}</td>
+     <td>${r.gift||''}</td>
+     <td>${r.sales||''}</td>
+     <td>${r.note||''}</td>
+   </tr>`;
+ });
+
+ // 區間支出明細累積：支出不套用銷售人員篩選，仍顯示全店支出
+ const expenseTb=$('monthExpenseDetailTable').querySelector('tbody');
+ expenseTb.innerHTML='';
+ allExpense.forEach(r=>{
+   expenseTb.innerHTML += `<tr>
+     <td>${r.date}</td>
+     <td>${r.rowNo}</td>
+     <td>${r.item||''}</td>
+     <td>${money(r.amount)}</td>
+     <td>${r.pay||''}</td>
+     <td>${r.keyinPerson||''}</td>
+     <td>${r.note||''}</td>
+   </tr>`;
+ });
+
+ // 區間銷售人員累積清單：套用銷售人員篩選
+ const groups={};
+ filteredIncome.forEach(r=>{
+   const name=(r.sales||'未填銷售人員').trim();
+   if(!groups[name])groups[name]=[];
+   groups[name].push(r);
+ });
+
+ const salesTb=$('monthSalesTable').querySelector('tbody');
+ salesTb.innerHTML='';
+ Object.entries(groups).sort().forEach(([name,items])=>{
+   let subtotal=0;
+   items.forEach((r,i)=>{
+     subtotal += Number(r.amount||0);
+     const code=[r.voucher?'券：'+r.voucher:'', r.memberCard?'卡：'+r.memberCard:''].filter(Boolean).join(' / ');
+     salesTb.innerHTML += `<tr>
+       <td>${i===0?'<strong>'+name+'</strong>':''}</td>
+       <td>${r.item||''}｜${r.product||''}</td>
+       <td>${r.pay||''}</td>
+       <td>${money(r.amount)}</td>
+       <td>${code}</td>
+       <td>${r.gift||''}</td>
+       <td>${r.note||''}</td>
+     </tr>`;
+   });
+   salesTb.innerHTML += `<tr class="subtotal">
+     <td colspan="3">${name} 小計</td>
+     <td>${money(subtotal)}</td>
+     <td colspan="3">共 ${items.length} 筆</td>
+   </tr>`;
+ });
+
+ // 區間課程 / 票券統計：套用銷售人員篩選
+ const monthStats={pkgMonth:0,pkgSeason:0,pkgYear:0,ticketSold:0,ptClass:0,productQty:0};
+ filteredIncome.forEach(r=>{
+   const t=`${r.item||''} ${r.product||''} ${r.note||''}`.toLowerCase();
+   if(/包月|月費|月繳|月卡/.test(t)) monthStats.pkgMonth++;
+   if(/包季|季繳|季卡|三個月|3個月|3 個月/.test(t)) monthStats.pkgSeason++;
+   if(/包年|年繳|年卡|一年|12個月|12 個月/.test(t)) monthStats.pkgYear++;
+   if(/票券|售券|券|100張|100 張/.test(t)) monthStats.ticketSold++;
+   if(/教練課|私教|pt|教練|課程/.test(t)) monthStats.ptClass++;
+   if(/產品|商品|補給|蛋白|毛巾|手套|護具|水|飲料/.test(t)) monthStats.productQty++;
+ });
+
+ $('monthPkgMonth').value=monthStats.pkgMonth;
+ $('monthPkgSeason').value=monthStats.pkgSeason;
+ $('monthPkgYear').value=monthStats.pkgYear;
+ $('monthTicketSold').value=monthStats.ticketSold;
+ $('monthPtClass').value=monthStats.ptClass;
+ $('monthProductQty').value=monthStats.productQty;
+
+ // 區間每日紀錄：營業額依篩選後收入，支出仍為全店支出
+ const tb=$('monthTable').querySelector('tbody');
+ tb.innerHTML='';
+ rows.forEach(d=>{
+   const dayIncome=(d.income||[]).filter(x=>!selectedSales || (x.sales||'未填銷售人員').trim()===selectedSales);
+   const r=dayIncome.reduce((s,x)=>s+(Number(x.amount)||0),0)||0;
+   const e=d.expense?.reduce((s,x)=>s+(Number(x.amount)||0),0)||0;
+   tb.innerHTML += `<tr>
+     <td>${d.basic?.date||''}</td>
+     <td>${money(r)}</td>
+     <td>${money(e)}</td>
+     <td>${money(r-e)}</td>
+     <td>${d.summary?.cashDiff||''}</td>
+     <td>${dayIncome.length||0}</td>
+     <td>${d.basic?.reporter||''}</td>
+   </tr>`;
+ });
+
+ const status=$('monthAutoUpdateStatus');
+ if(status){
+   const now=new Date();
+   status.textContent=`區間總和已自動更新：${realStart} ～ ${realEnd}｜${now.toLocaleString('zh-TW',{hour12:false})}`;
+ }
+ labelTables();
+}
+function bind(){document.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{calculate();dirty()}));}
+function init(){
+  $('date').value=todayStr();
+  $('rangeStartDate').value=firstDayOfMonth();
+  $('rangeEndDate').value=lastDayOfMonth();
+  bind();
+  renderInvoiceItemSettings();
+  renderStaffItemSettings();
+  if($('incomeTable').querySelectorAll('tbody tr').length===0)addIncomeRow();
+  calculate();
+  loadInvoiceItemsFromSheet();
+  setInterval(()=>{
+    const monthPage=$('page-month');
+    if(monthPage && !monthPage.classList.contains('hidden')) renderMonth();
+  }, 30000);
+}
+init();
 </script>
 </body>
 </html>
