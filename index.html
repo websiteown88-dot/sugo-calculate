@@ -217,6 +217,25 @@ td input,td select{padding:8px;min-height:38px;border-radius:9px;font-size:15px}
   .tab{min-width:132px;height:44px}
 }
 
+
+/* 收入明細備註框 */
+textarea.incomeNote{
+  min-width:180px;
+  min-height:54px;
+  resize:vertical;
+  border:1.5px solid #B8A882;
+  background:#FFFDF8;
+  color:#1A1A1A;
+  border-radius:14px;
+  padding:12px 14px;
+  font-size:15px;
+  line-height:1.35;
+}
+textarea.incomeNote:focus{
+  border-color:#2C3E2D;
+  box-shadow:0 0 0 4px rgba(184,168,130,.22);
+}
+
 </style>
 </head>
 <body>
@@ -854,8 +873,8 @@ async function loadInvoiceItemsFromSheet(){
 function incomeRow(data={}){
  const tr=document.createElement('tr');
  tr.dataset.confirmed = data.confirmed ? 'true' : 'false';
- tr.innerHTML=`<td class="idx"></td><td><select class="item">${invoiceOptions(data.item||'')}</select></td><td><select class="pay">${['現金','刷卡','匯款','其他'].map(x=>`<option ${data.pay===x?'selected':''}>${x}</option>`).join('')}</select></td><td><input type="number" class="amount" value="${data.amount||''}" min="0"></td><td><input class="voucher" value="${data.voucher||''}"></td><td><input class="memberCard" value="${data.memberCard||''}"></td><td><input class="product" value="${data.product||''}"></td><td><input class="gift" value="${data.gift||''}"></td><td><select class="sales">${staffOptions(data.sales||'')}</select></td><td><input class="note" value="${data.note||''}"></td><td><span class="confirm-pill">待確認</span></td><td class="no-print"><button class="small primary" onclick="confirmKeyRow(this,'income')">確認</button></td>`;
- tr.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',()=>{calculate();dirty()}));
+ tr.innerHTML=`<td class="idx"></td><td><select class="item">${invoiceOptions(data.item||'')}</select></td><td><select class="pay">${['現金','刷卡','匯款','其他'].map(x=>`<option ${data.pay===x?'selected':''}>${x}</option>`).join('')}</select></td><td><input type="number" class="amount" value="${data.amount||''}" min="0"></td><td><input class="voucher" value="${data.voucher||''}"></td><td><input class="memberCard" value="${data.memberCard||''}"></td><td><input class="product" value="${data.product||''}"></td><td><input class="gift" value="${data.gift||''}"></td><td><select class="sales">${staffOptions(data.sales||'')}</select></td><td><textarea class="incomeNote" placeholder="填寫備註，例如：特殊付款、補差、贈品說明">${data.note||''}</textarea></td><td><span class="confirm-pill">待確認</span></td><td class="no-print"><button class="small primary" onclick="confirmKeyRow(this,'income')">確認</button></td>`;
+ tr.querySelectorAll('input,select,textarea').forEach(e=>e.addEventListener('input',()=>{calculate();dirty()}));
  if(data.confirmed) setRowConfirmed(tr);
  return tr
 }
@@ -898,7 +917,7 @@ function removeConfirmedExpense(idx){ const rows=confirmedRows('expenseTable'); 
 function addIncomeRow(data){$('incomeTable').querySelector('tbody').appendChild(incomeRow(data)); calculate()}
 function addExpenseRow(data){$('expenseTable').querySelector('tbody').appendChild(expenseRow(data)); calculate()}
 function getIncomeRows(){
- return confirmedRows('incomeTable').map(tr=>({item:tr.querySelector('.item').value,pay:tr.querySelector('.pay').value,amount:Number(tr.querySelector('.amount').value)||0,voucher:tr.querySelector('.voucher').value,memberCard:tr.querySelector('.memberCard').value,product:tr.querySelector('.product').value,gift:tr.querySelector('.gift').value,sales:tr.querySelector('.sales').value,note:tr.querySelector('.note').value,confirmed:true})).filter(r=>r.item||r.amount||r.sales||r.note)
+ return confirmedRows('incomeTable').map(tr=>({item:tr.querySelector('.item').value,pay:tr.querySelector('.pay').value,amount:Number(tr.querySelector('.amount').value)||0,voucher:tr.querySelector('.voucher').value,memberCard:tr.querySelector('.memberCard').value,product:tr.querySelector('.product').value,gift:tr.querySelector('.gift').value,sales:tr.querySelector('.sales').value,note:tr.querySelector('.incomeNote').value,confirmed:true})).filter(r=>r.item||r.amount||r.sales||r.note)
 }
 function getExpenseRows(){
  return confirmedRows('expenseTable').map(tr=>({item:tr.querySelector('.exItem').value,amount:Number(tr.querySelector('.exAmount').value)||0,pay:tr.querySelector('.exPay').value,keyinPerson:tr.querySelector('.exKeyin').value,note:tr.querySelector('.exNote').value,confirmed:true})).filter(r=>r.item||r.amount||r.note||r.keyinPerson)
